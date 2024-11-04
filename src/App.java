@@ -38,7 +38,6 @@ public class App extends GraphicsProgram implements KeyListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-
         if (!isCollidedY) {
             checkCollision();
             player.move(0, gravity);
