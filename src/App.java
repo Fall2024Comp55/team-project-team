@@ -63,7 +63,11 @@ public class App extends GraphicsProgram implements KeyListener {
                 velocity = 0;
             }
             System.out.println(velocity);
-        }   
+        } else if (!spaceIsPressed) {
+        	player.move(0, -velocity);
+        	velocity = 0;
+        	resetMovement();
+        }
     }
 
     public void checkCollision() {
