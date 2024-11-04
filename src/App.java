@@ -96,15 +96,6 @@ public class App extends GraphicsProgram implements KeyListener {
     }
 
     public void createPlatforms() {
-        // GRect platform0 = new GRect(0, PROGRAM_HEIGHT - 200, 100, 200);
-        // platforms.add(platform0);
-        // add(platform0);
-        // GRect platform1 = new GRect(0, PROGRAM_HEIGHT, PROGRAM_WIDTH, PROGRAM_HEIGHT);
-        // platforms.add(platform1);
-        // add(platform1);
-        // GRect platform2 = new GRect(PROGRAM_WIDTH, 0, PROGRAM_WIDTH, PROGRAM_HEIGHT);
-        // platforms.add(platform2);
-        // add(platform2);
         GLine left = new GLine(0, 0, 0, PROGRAM_HEIGHT);
         GLine top = new GLine(0, 0, PROGRAM_WIDTH, 0);
         GLine right = new GLine(PROGRAM_WIDTH, 0, PROGRAM_WIDTH, PROGRAM_HEIGHT);
