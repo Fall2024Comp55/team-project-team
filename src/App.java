@@ -15,7 +15,7 @@ public class App extends GraphicsProgram implements KeyListener {
     private ArrayList<GRect> platforms;
     private GOval player;
     private Timer time;
-    private Timer spaceTimer;
+    private Timer spaceTimer = new Timer(1000, this); //creating the timer object and having it count per second
     private int gravity = 2;
     private int movement = 3;
     private int velocity = 0;
@@ -38,6 +38,7 @@ public class App extends GraphicsProgram implements KeyListener {
     }
 
     public void actionPerformed(ActionEvent e) {
+
         if (!isCollidedY) {
             checkCollision();
             player.move(0, gravity);
@@ -54,6 +55,7 @@ public class App extends GraphicsProgram implements KeyListener {
             player.move(movement, 0);
         }
         if (spaceIsPressed && isCollidedY) {
+        	//velocity++;
             checkCollision();
             if (velocity >= 200) {
                 player.move(0, -50);
@@ -126,7 +128,9 @@ public class App extends GraphicsProgram implements KeyListener {
                 System.out.println("Key 'Space' has been pressed!");
                 spaceIsPressed = true;
                 spaceTimer.start();
+                
             }
+            System.out.println(velocity);
         }
     
         @Override
@@ -149,6 +153,8 @@ public class App extends GraphicsProgram implements KeyListener {
                 spaceIsPressed = false;
                 resetMovement();
                 spaceTimer.stop();
+                velocity = 0;
+                
             }
         }
     
