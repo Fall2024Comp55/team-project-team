@@ -128,6 +128,10 @@ public class App extends GraphicsProgram implements KeyListener {
             dIsPressed = true;
             }
             if (keyCode == KeyEvent.VK_SPACE) {
+            	if (!isCollidedY) {
+            		resetMovement();
+            		return;
+            	}
                 System.out.println("Key 'Space' has been pressed!");
                 spaceIsPressed = true;
                 spaceTimer.start();
