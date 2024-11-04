@@ -55,11 +55,14 @@ public class App extends GraphicsProgram implements KeyListener {
             player.move(movement, 0);
         }
         if (spaceIsPressed && isCollidedY) {
-        	//velocity++;
+        	velocity++;
             checkCollision();
-            if (velocity >= 200) {
+            if (velocity >= 50) {
                 player.move(0, -50);
+                spaceTimer.stop();
+                velocity = 0;
             }
+            System.out.println(velocity);
         }   
     }
 
@@ -130,7 +133,7 @@ public class App extends GraphicsProgram implements KeyListener {
                 spaceTimer.start();
                 
             }
-            System.out.println(velocity);
+            //System.out.println(velocity);
         }
     
         @Override
@@ -152,8 +155,6 @@ public class App extends GraphicsProgram implements KeyListener {
                 System.out.println("Key 'Space' has been released!");
                 spaceIsPressed = false;
                 resetMovement();
-                spaceTimer.stop();
-                velocity = 0;
                 
             }
         }
