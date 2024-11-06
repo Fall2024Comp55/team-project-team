@@ -17,6 +17,12 @@ public class Player {
     
     public Player() {
     	skin = new Skin();
+    	skin.setSkin();
+    	player = skin.getSkin();
+    }
+    
+    public GImage getSkin() {
+    	return player;
     }
     
     public int getPosX() {
