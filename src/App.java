@@ -9,8 +9,6 @@ public class App extends GraphicsProgram implements KeyListener {
     public static final int PROGRAM_WIDTH = 500;
     public static final int PROGRAM_HEIGHT = 500;
     public static final int PLAYER_SIZE = 100;
-    public static final int MOVEMENT = 3;
-    public static final int GRAVITY = 3;
 
     private ArrayList<GRect> platforms;
     private GOval player;
