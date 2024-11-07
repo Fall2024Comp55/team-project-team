@@ -27,7 +27,18 @@ public class Grid {
 	 return this.numCols;
  }
  
+ public Space getSpace(int row, int col) {
+	 if(isValidPosition(row, col)) {
+		 return grid[row][col];
+	 }
+	 else {
+		 throw new IllegalArgumentException("Not a valid position");
+	 }
+ }
  
  
 
+public boolean isValidPosition(int row, int col) {
+	return row >= 0 && row <= numRows && col >= 0 && col <= numCols;
+}
 }
