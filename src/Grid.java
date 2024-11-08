@@ -61,9 +61,9 @@ public class Grid {
 	 }
  }
  
- public void setPlatform(int row, int col, String imagePath) {// creating of platforms in grid space
+ public void setPlatform(int row, int col,int width, int height, String imagePath) {// creating of platforms in grid space
 	 if(isValidPosition(row,col)) {
-		 Platforms platform = new Platforms(row, col, imagePath);
+		 Platforms platform = new Platforms(width, height, imagePath);
 		 grid[row][col].setPlatform(platform);
 	 }
  }
