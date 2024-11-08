@@ -36,6 +36,18 @@ public class Grid {
 	 }
  }
  
+ public void setPushTrap(int row, int col) {
+	 if(isValidPosition(row,col)) {
+		Trap.PushSpring pushTrap = new Trap.PushSpring(row, col);
+		grid[row][col].setTrap(pushTrap);
+	 }
+ }
+ 
+ public void setPlatform(int row, int col) {
+	 if(isValidPosition(row,col)) {
+		 grid[row][col] = //platform, mat;
+	 }
+ }
  
 
 public boolean isValidPosition(int row, int col) {
