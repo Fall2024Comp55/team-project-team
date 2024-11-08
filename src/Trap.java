@@ -17,7 +17,7 @@ public abstract class Trap {
     public abstract void action(Player player);
 
     // Inner class for PushSpring trap
-    public class PushSpring extends Trap {
+    public static class PushSpring extends Trap {
         private int launchPower = 20;  // Adjust as needed for launch strength
 
         public PushSpring(int x, int y) {
@@ -41,7 +41,7 @@ public abstract class Trap {
     }
 
     // Inner class for Wind trap
-    public class Wind extends Trap {
+    public static class Wind extends Trap {
         private int windPower;
         private String direction;  
 
