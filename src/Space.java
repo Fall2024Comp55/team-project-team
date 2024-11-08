@@ -3,7 +3,7 @@ public class Space {
 	
 	private int row;
 	private int col;
-	private Trap trap;
+	private Trap trap;// made to be able to place traps in space locations
 	
 	public void setRow(int x) {
 		row = x;
@@ -21,17 +21,17 @@ public class Space {
 		return col;
 	}
 	
-	public Space(int row, int col) { // constructor
+	public Space(int row, int col) { // space class constructor
 		this.row = row;
 		this.col = col;
 		this.trap = null;
 	}
 	
-	public void setTrap(Trap trap) {
+	public void setTrap(Trap trap) {// location to set traps
 		this.trap = trap;
 	}
 	
-	public boolean hasTrap() {
+	public boolean hasTrap() {// check is location already has a trap
 		return trap != null;
 	}
 	
