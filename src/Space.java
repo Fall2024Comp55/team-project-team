@@ -3,7 +3,7 @@ public class Space {
 	
 	private int row;
 	private int col;
-	
+	private Trap trap;
 	
 	public void setRow(int x) {
 		row = x;
@@ -21,9 +21,18 @@ public class Space {
 		return col;
 	}
 	
-	public Space(int row, int col) {
+	public Space(int row, int col) { // constructor
 		this.row = row;
 		this.col = col;
+		this.trap = null;
+	}
+	
+	public void setTrap(Trap trap) {
+		this.trap = trap;
+	}
+	
+	public boolean hasTrap() {
+		return trap != null;
 	}
 	
 	//testing to see if the class worked
