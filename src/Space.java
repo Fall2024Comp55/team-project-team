@@ -4,6 +4,7 @@ public class Space {
 	private int row;
 	private int col;
 	private Trap trap;// made to be able to place traps in space locations
+	private Platforms platform;
 	
 	public void setRow(int x) {
 		row = x;
@@ -25,10 +26,23 @@ public class Space {
 		this.row = row;
 		this.col = col;
 		this.trap = null;
+		this.platform = null;
 	}
 	
 	public void setTrap(Trap trap) {// location to set traps
 		this.trap = trap;
+	}
+	
+	public void setPlatform(Platforms platform) {
+		this.platform = platform;
+	}
+	
+	public boolean hasPlatform() {
+		return platform != null;
+	}
+	
+	public Platforms getPlatform() {
+		return platform;
 	}
 	
 	public boolean hasTrap() {// check is location already has a trap
