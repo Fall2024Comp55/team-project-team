@@ -68,11 +68,12 @@ public abstract class Trap {
             return player.getPosY() == this.posY && 
                    player.getPosX() >= this.posX && player.getPosX() <= this.posX + trap.getWidth();
         }
+    }
     
     
 
     // Inner class for Wind trap
-    public class Wind extends Trap {
+    public static class Wind extends Trap {
         private int windPower;
         private String direction; 
         private ArrayList<GImage> windImages;
@@ -163,3 +164,4 @@ public abstract class Trap {
 
     // Additional Boss classes (e.g., Boss3, Boss4)
 }
+
