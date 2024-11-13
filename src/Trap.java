@@ -19,17 +19,29 @@ public abstract class Trap {
     // Inner class for PushSpring trap
     public static class PushSpring extends Trap {
         private int launchPower = 20;  // Adjust as needed for launch strength
-
+        private ArrayList<GImage> springImages; // To store the three images
         public PushSpring(int x, int y) {
             this.posX = x;
             this.posY = y;
-            //Add trap image here 
+            springImages = new ArrayList<>();
+            
+            // Add images to Arraylist
+            springImages.add(new GImage("springTrap1.png")); // Default unengaged image
+            springImages.add(new GImage("springTrap2.png")); // Mid-engaged image
+            springImages.add(new GImage("springTrap3.png")); // Fully engaged image
+            
+            // Set the initial (default) image
+            trap = springImages.get(0);
+            trap.setLocation(posX, posY);
         }
 
         @Override
         public void action(Player player) {
             if (isPlayerOnTrap(player)) { // Check if player is on the PushSpring trap
-                player.setJumpVelocity(-launchPower); // Launch player upwards by modifying jump velocity
+                //Start the timer loop through images
+            	//Set image to image 2
+            	//Then image 3
+            	player.setJumpVelocity(-launchPower); // Launch player upwards by modifying jump velocity
             }
         }
 
