@@ -1,27 +1,36 @@
 import acm.graphics.*;
 
 public class Platforms {
-private int width;
-private int height;
-private GImage platformImage;
+private double width;
+private double height;
+private GRect platform;
+//private GImage platform;
 
-public Platforms(int width, int height, String imagePath) {
+
+public Platforms(double x, double y, double width, double height) {// rectangle constructor for platforms
 	this.width = width;
 	this.height = height;
-	this.platformImage = new GImage(imagePath); //set image
-	this.platformImage.setSize(width, height); // sets dimensions of image
+	this.platform = new GRect(x,y,width,height);
 }
 
-public int getWidth() {
+/*
+public Platforms(double x, double y, double width, double height, String imagePath) {// this is if we want to make the platforms with images
+    this.width = width;
+    this.height = height;
+    this.platform = new GImage(imagePath, x, y);
+    platform.setSize(width, height);
+}
+*/
+public double getWidth() {
 	return width;
 }
 
-public int getHeight() {
+public double getHeight() {
 	return height;
 }
 
-public GImage getPlatformImage() {
-	return platformImage;
+public GRect getplatform() {
+	return platform;
 }
 
 }
