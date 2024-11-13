@@ -3,7 +3,8 @@ public class Space {
 	
 	private int row;
 	private int col;
-	private Trap trap;// made to be able to place traps in space locations
+	private Trap.Wind windTrap;
+	private Trap.PushSpring pushTrap;
 	private Platforms platform;
 	
 	public void setRow(int x) {
@@ -25,12 +26,17 @@ public class Space {
 	public Space(int row, int col) { // space class constructor
 		this.row = row;
 		this.col = col;
-		this.trap = null;
+		this.windTrap = null;
+		this.pushTrap = null;
 		this.platform = null;
 	}
 	
-	public void setTrap(Trap trap) {// location to set traps
-		this.trap = trap;
+	public void setTrap(Trap.PushSpring trap) {
+		this.pushTrap = trap;
+	}
+	
+	public void setTrap(Trap.Wind trap) {
+		this.windTrap = trap;
 	}
 	
 	public void setPlatform(Platforms platform) {
@@ -45,10 +51,21 @@ public class Space {
 		return platform;
 	}
 	
-	public boolean hasTrap() {// check is location already has a trap
-		return trap != null;
+	public boolean hasWindTrap() {// check is location already has a trap
+		return windTrap != null;
 	}
 	
+	public boolean hasPushTrap() {
+		return pushTrap != null;
+	}
+	
+	public Trap getPushTrap() {
+		return this.pushTrap;
+	}
+	
+	public Trap getWindTrap() {// location to set traps
+		return this.windTrap;
+	}
 	//testing to see if the class worked
 	public static void main(String[] args) {
 		Space one = new Space(3, 4);
