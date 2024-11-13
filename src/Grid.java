@@ -28,7 +28,7 @@ public class Grid {
 	 return this.numCols;
  }
  
- public Space getSpace(int row, int col) { 
+ public Space getSpace(int row, int col) { // Space location validation
 	 if(isValidPosition(row, col)) {
 		 return grid[row][col];
 	 }
@@ -61,9 +61,13 @@ public class Grid {
 	 }
  }
  
- public void setPlatform(int row, int col,int width, int height, String imagePath) {// creating of platforms in grid space
+ public void setPlatform(int row, int col, int width, int height) {// creating of platforms in grid space
+	 double x = (double)row;
+	 double y = (double)col;
+	 double w = (double)width;
+	 double h = (double)height;
 	 if(isValidPosition(row,col)) {
-		 Platforms platform = new Platforms(width, height, imagePath);
+		 Platforms platform = new Platforms(x,y,w,h);
 		 grid[row][col].setPlatform(platform);
 	 }
  }
@@ -72,4 +76,30 @@ public class Grid {
 public boolean isValidPosition(int row, int col) {
 	return row >= 0 && row <= numRows && col >= 0 && col <= numCols;
 }
+
+public void printPlatforms() {
+	for(int i = 0; i < this.numRows; i++ ) {
+		for(int j = 0; j < this.numCols; j++) {
+			if(grid[i][j].hasPlatform()) {
+				Platforms platform = grid[i][j].getPlatform();
+				System.out.println("Platform location: x = "+ i +", y = "+ j +". Size of platform: width = "+platform.getWidth()+", "+platform.getHeight()+". ");
+			}
+		}
+	}
 }
+
+public static void main(String[] args) {
+	Space one = new Space(3, 4);
+	Space two = new Space(1, 6);
+	Grid board = new Grid(4,7);
+	two.setRow(two.getRow()+1);
+	two.setCol(two.getCol()-1);
+	board.setPlatform(2, 1, 3, 3);
+	board.printPlatforms();
+	System.out.println("one r: " + one.getRow() + ", c: " + one.getCol());
+	System.out.println("two r: " + two.getRow() + ", c: " + two.getCol());
+	}
+
+
+}
+
