@@ -80,9 +80,16 @@ public boolean isValidPosition(int row, int col) {
 public void printPlatforms() {
 	for(int i = 0; i < this.numRows; i++ ) {
 		for(int j = 0; j < this.numCols; j++) {
+			Platforms platform = grid[i][j].getPlatform();
 			if(grid[i][j].hasPlatform()) {
-				Platforms platform = grid[i][j].getPlatform();
 				System.out.println("Platform location: x = "+ i +", y = "+ j +". Size of platform: width = "+platform.getWidth()+", "+platform.getHeight()+". ");
+			}
+			if(grid[i][j].hasPushTrap()) {
+				System.out.println("Pushspring location: x = "+ i +", y = "+ j +" ");
+			}
+			else if(grid[i][j].hasWindTrap()) {
+				System.out.println("Wind location: x = "+ i +", y = "+ j +"");
+
 			}
 		}
 	}
@@ -95,7 +102,11 @@ public static void main(String[] args) {
 	two.setRow(two.getRow()+1);
 	two.setCol(two.getCol()-1);
 	board.setPlatform(2, 1, 3, 3);
+	board.setPlatform(1, 2, 2, 2);
+	board.setPushTrap(2, 3);
+	board.setWindTrap(2, 2, 1);
 	board.printPlatforms();
+	
 	System.out.println("one r: " + one.getRow() + ", c: " + one.getCol());
 	System.out.println("two r: " + two.getRow() + ", c: " + two.getCol());
 	}
