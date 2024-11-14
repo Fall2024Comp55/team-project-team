@@ -1,6 +1,8 @@
+import java.util.ArrayList;
 import acm.graphics.*;
 
 public class Skin {
+	private ArrayList<GImage> skinList;
 	private GImage skin;
 	
 	public void setSkin() {

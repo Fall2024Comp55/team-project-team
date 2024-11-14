@@ -8,7 +8,7 @@ public class Player {
     public static final int GRAVITY = 3;
     
 	private GImage player;
-	private Skin skin;
+	private Skin skin = new Skin();
 	private int posX;
 	private int posY;
 	private boolean isFacingLeft;
@@ -16,9 +16,8 @@ public class Player {
     private int jumpVelocity = 0;
     
     public Player() {
-    	skin = new Skin();
-    	skin.setSkin();
     	player = skin.getSkin();
+    	player.move(0, GRAVITY);
     }
     
     public GImage getSkin() {
@@ -35,22 +34,22 @@ public class Player {
     
     public int setRunDirection(int speed) {
     	return runDirection + speed;
+    	
     }
     
     public int setJumpVelocity(int speed) {
     	return jumpVelocity + speed;
     }
     
-    public void move(int velocity) {
-    	runDirection = RUNSPEED;
-    	if (isFacingLeft) {
-    		player.move(-runDirection, 0);
-    	} else {
-    		player.move(runDirection, 0);
-    	}
+    public void move_left() {
+    	player.move(-RUNSPEED, 0);
     }
     
-    public void jump(int velocity) {
-    	player.move(runDirection, jumpVelocity);
+    public void move_right() {
+    	player.move(RUNSPEED, 0);
+    }
+    
+    public void jump() {
+    	player.move(0, -GRAVITY * 2);
     }
 }
