@@ -1,4 +1,4 @@
-import acm.graphics.*;
+import acm.graphics.GRect;
 
 public class Platforms {
 private double width;
@@ -11,6 +11,8 @@ public Platforms(double x, double y, double width, double height) {// rectangle 
 	this.width = width;
 	this.height = height;
 	this.platform = new GRect(x,y,width,height);
+	this.platform.setFilled(true);
+    this.platform.setColor(java.awt.Color.GRAY); // Make platforms visible
 }
 
 /*
