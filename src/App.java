@@ -1,166 +1,165 @@
 import java.util.ArrayList;
 import javax.swing.Timer;
 import java.awt.event.*;
-
 import acm.graphics.*;
 import acm.program.*;
 
 public class App extends GraphicsProgram implements KeyListener {
     public static final int PROGRAM_WIDTH = 500;
     public static final int PROGRAM_HEIGHT = 500;
-    public static final int PLAYER_SIZE = 100;
+    public static final int PLAYER_SIZE = 50;
 
     private ArrayList<GRect> platforms;
     private GOval player;
     private Timer time;
-    private Timer spaceTimer = new Timer(1000, this); //creating the timer object and having it count per second
+    private Grid grid; // Reference to the game grid
     private int gravity = 2;
-    private int movement = 3;
     private int velocity = 0;
-    private boolean isCollidedX = false;
+    private int jumpPower = 0; // Tracks how long the space key is held
+    private final int MAX_JUMP_POWER = 30; // Maximum jump power
+    private final int JUMP_INCREMENT = 5; // Power increase per frame
     private boolean isCollidedY = false;
 
-    private boolean wIsPressed = false;
     private boolean aIsPressed = false;
-    private boolean sIsPressed = false;
     private boolean dIsPressed = false;
     private boolean spaceIsPressed = false;
 
     public void run() {
-        platforms = new ArrayList<GRect>();
-        time = new Timer(1, this);
+        grid = new Grid(10, 10); // Initialize a 10x10 grid
+        platforms = new ArrayList<>();
+        time = new Timer(10, this);
         time.start();
         createPlayer();
-        createPlatforms();
+        createLevel();
         addKeyListeners(new MovementKeyListener());
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (!isCollidedY) {
-            checkCollision();
-            player.move(0, gravity);
-            return;
-        }
-        checkCollision();
-        player.move(0, gravity);
+    	
+    	if (spaceIsPressed && isCollidedY) {
+    		  if (jumpPower < MAX_JUMP_POWER) {
+    	            jumpPower += JUMP_INCREMENT; // Gradually increase jump power
+    	        }
+    	}
+
+    	// Apply gravity and update position
+    	player.move(0, velocity);
+    	velocity += gravity; // Increase downward velocity over time
+    	
+    	checkCollision();
+
+    	// Prevent falling through the bottom of the screen
+    	if (player.getY() > PROGRAM_HEIGHT - PLAYER_SIZE) {
+    	    player.setLocation(player.getX(), PROGRAM_HEIGHT - PLAYER_SIZE);
+    	    velocity = 0;
+    	    isCollidedY = true; // Reset to grounded state
+    	} // Check for collisions with platforms
+
+        // Handle horizontal movement
         if (aIsPressed) {
-            checkCollision();
-            player.move(-movement, 0);
+            player.move(-3, 0);
         }
         if (dIsPressed) {
-            checkCollision();
-            player.move(movement, 0);
-        }
-        if (spaceIsPressed && isCollidedY) {
-        	velocity++;
-            checkCollision();
-            if (velocity >= 50) {
-                player.move(0, -50);
-                spaceTimer.stop();
-                velocity = 0;
-            }
-            System.out.println(velocity);
-        } else if (!spaceIsPressed) {
-        	player.move(0, -velocity);
-        	velocity = 0;
-        	resetMovement();
+            player.move(3, 0);
         }
     }
 
     public void checkCollision() {
-        if (getElementAt(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight()) instanceof GLine || getElementAt(player.getX() + player.getWidth() / 2, player.getY()) instanceof GLine) {
-            gravity *= 0;
-            isCollidedY = true;
-        } else {
-            isCollidedY = false;
-        }
-        if (getElementAt(player.getX(), player.getY() + player.getHeight() / 2) instanceof GLine || getElementAt(player.getX() + player.getWidth(), player.getY() + player.getHeight() / 2) instanceof GLine) {
-            movement *= 0;
-            isCollidedX = true;
-        } else {
-            isCollidedX = false;
-        }
-    }
+        isCollidedY = false; // Reset collision state
 
-    public void resetMovement() {
-        gravity = 2;
-        movement = 3;
-    }
+        for (int i = 0; i < grid.getNumRows(); i++) {
+            for (int j = 0; j < grid.getNumCols(); j++) {
+                if (grid.getSpace(i, j).hasPlatform()) {
+                    Platforms platform = grid.getSpace(i, j).getPlatform();
+
+                    // Debug: Log positions
+                    System.out.println("Player: x=" + player.getX() + ", y=" + player.getY() + 
+                                       ", width=" + PLAYER_SIZE + ", height=" + PLAYER_SIZE);
+                    System.out.println("Platform: x=" + platform.getplatform().getX() + 
+                                       ", y=" + platform.getplatform().getY() + 
+                                       ", width=" + platform.getplatform().getWidth() + 
+                                       ", height=" + platform.getplatform().getHeight());
+
+                    // Check if the player's bottom edge intersects the platform's top edge
+                    if (player.getBounds().intersects(platform.getplatform().getBounds())) {
+                        platform.getplatform().setColor(java.awt.Color.GREEN); // Debug: successful collision
+                        player.setLocation(player.getX(), platform.getplatform().getY() - PLAYER_SIZE);
+                        velocity = 0;
+                        isCollidedY = true;
+                        return;
+                    }
+                }
+            }
+        }
+      }
 
     public void createPlayer() {
-        player = new GOval(PROGRAM_WIDTH / 2,  300 - PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE);
+        player = new GOval(PROGRAM_WIDTH / 2, PROGRAM_HEIGHT - PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE);
+        player.setFilled(true);
+        player.setColor(java.awt.Color.RED); // Player's color
         add(player);
     }
 
-    public void createPlatforms() {
-        GLine left = new GLine(0, 0, 0, PROGRAM_HEIGHT);
-        GLine top = new GLine(0, 0, PROGRAM_WIDTH, 0);
-        GLine right = new GLine(PROGRAM_WIDTH, 0, PROGRAM_WIDTH, PROGRAM_HEIGHT);
-        GLine bottom = new GLine(0, PROGRAM_HEIGHT, PROGRAM_WIDTH, PROGRAM_HEIGHT);
-        add(left);
-        add(top);
-        add(right);
-        add(bottom);
+    public void createLevel() {
+        // Define platforms in the grid
+        grid.setPlatform(7, 2, 100, 20);
+        grid.setPlatform(5, 4, 100, 20);
+        grid.setPlatform(3, 6, 100, 20);
+        grid.setPlatform(1, 8, 100, 20); // Topmost platform
+
+        // Add graphical representation of platforms
+        for (int i = 0; i < grid.getNumRows(); i++) {
+            for (int j = 0; j < grid.getNumCols(); j++) {
+                if (grid.getSpace(i, j).hasPlatform()) {
+                    Platforms platform = grid.getSpace(i, j).getPlatform();
+                    add(platform.getplatform());
+                }
+            }
+        }
+        remove(player); // Remove the player
+        add(player);    // Re-add the player to the canvas
     }
 
     public void init() {
-		setSize(PROGRAM_WIDTH, PROGRAM_HEIGHT);
-	}
+        setSize(PROGRAM_WIDTH, PROGRAM_HEIGHT);
+    }
 
     private class MovementKeyListener implements KeyListener {
         @Override
         public void keyPressed(KeyEvent e) {
             int keyCode = e.getKeyCode();
             if (keyCode == KeyEvent.VK_A) {
-                System.out.println("Key 'A' has been pressed!");
                 aIsPressed = true;
             }
             if (keyCode == KeyEvent.VK_D) {
-                System.out.println("Key 'D' has been pressed!");
-            dIsPressed = true;
+                dIsPressed = true;
             }
-            if (keyCode == KeyEvent.VK_SPACE) {
-            	if (!isCollidedY) {
-            		resetMovement();
-            		return;
-            	}
-                System.out.println("Key 'Space' has been pressed!");
+            if (keyCode == KeyEvent.VK_SPACE && isCollidedY) {
                 spaceIsPressed = true;
-                spaceTimer.start();
-                
             }
-            //System.out.println(velocity);
         }
-    
+
         @Override
         public void keyReleased(KeyEvent e) {
             int keyCode = e.getKeyCode();
             if (keyCode == KeyEvent.VK_A) {
-                System.out.println("Key 'A' has been released!");
                 aIsPressed = false;
-                resetMovement();
-                player.move(3, 0);
             }
             if (keyCode == KeyEvent.VK_D) {
-                System.out.println("Key 'D' has been released!");
                 dIsPressed = false;
-                resetMovement();
-                player.move(-3, 0);
             }
             if (keyCode == KeyEvent.VK_SPACE) {
-                System.out.println("Key 'Space' has been released!");
+                if (isCollidedY) {
+                    velocity = -jumpPower; // Use jumpPower as initial upward velocity
+                }
+                jumpPower = 0; // Reset jump power when space is released
                 spaceIsPressed = false;
-                resetMovement();
-                
             }
+
         }
-    
         @Override
         public void keyTyped(KeyEvent e) {
-            // if (e.getKeyChar() == KeyEvent.VK_SPACE) {
-            //     System.out.println("Key 'Space' has been clicked");
-            //     spaceIsPressed = true;
-            // }
+            // Unused
         }
     }
 

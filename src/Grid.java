@@ -61,16 +61,16 @@ public class Grid {
 	 }
  }
  
- public void setPlatform(int row, int col, int width, int height) {// creating of platforms in grid space
-	 double x = (double)row;
-	 double y = (double)col;
-	 double w = (double)width;
-	 double h = (double)height;
-	 if(isValidPosition(row,col)) {
-		 Platforms platform = new Platforms(x,y,w,h);
-		 grid[row][col].setPlatform(platform);
-	 }
- }
+ public void setPlatform(int row, int col, int width, int height) {
+	    double x = col * 50; // Assuming each grid cell is 50x50 pixels
+	    double y = row * 50;
+	    double w = width * 2;
+	    double h = height * 2;
+	    if (isValidPosition(row, col)) {
+	        Platforms platform = new Platforms(x, y, w, h);
+	        grid[row][col].setPlatform(platform);
+	    }
+	}
  
 
 public boolean isValidPosition(int row, int col) {
@@ -96,19 +96,11 @@ public void printPlatforms() {
 }
 
 public static void main(String[] args) {
-	Space one = new Space(3, 4);
-	Space two = new Space(1, 6);
-	Grid board = new Grid(4,7);
-	two.setRow(two.getRow()+1);
-	two.setCol(two.getCol()-1);
-	board.setPlatform(2, 1, 3, 3);
-	board.setPlatform(1, 2, 2, 2);
-	board.setPushTrap(2, 3);
-	board.setWindTrap(2, 2, 1);
-	board.printPlatforms();
-	
-	System.out.println("one r: " + one.getRow() + ", c: " + one.getCol());
-	System.out.println("two r: " + two.getRow() + ", c: " + two.getCol());
+	Grid grid = new Grid(10, 10); // Create a 10x10 grid
+    grid.setPlatform(2, 3, 2, 1); // Add a platform
+    grid.setPlatform(5, 4, 3, 1); // Add another platform
+
+    grid.printPlatforms(); // Print all platform positions
 	}
 
 
