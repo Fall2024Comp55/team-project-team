@@ -15,7 +15,7 @@ public class App extends GraphicsProgram implements KeyListener {
     private Grid grid; // Reference to the game grid
     private int gravity = 2;
     private int velocity = 0;
-    private int jumpPower = 10; // Tracks how long the space key is held
+    private int jumpPower = 0; // Tracks how long the space key is held
     private final int MAX_JUMP_POWER = 30; // Maximum jump power
     private final int JUMP_INCREMENT = 5; // Power increase per frame
     private boolean isCollidedY = false;
@@ -45,7 +45,7 @@ public class App extends GraphicsProgram implements KeyListener {
 
     	// Prevent falling through the bottom of the screen
     	if (player.getY() > PROGRAM_HEIGHT - PLAYER_SIZE) {
-    	    player.setLocation(player.getX(), PROGRAM_HEIGHT - PLAYER_SIZE);
+    	    player.setLocation(player.getX(), PROGRAM_HEIGHT - PLAYER_SIZE + 1);
     	    velocity = 0;
     	    isCollidedY = true; // Reset to grounded state
     	} // Check for collisions with platforms
@@ -71,17 +71,24 @@ public class App extends GraphicsProgram implements KeyListener {
                     System.out.println("Player: x=" + player.getX() + ", y=" + player.getY() + 
                                        ", width=" + PLAYER_SIZE + ", height=" + PLAYER_SIZE);
                     System.out.println("Platform: x=" + platform.getplatform().getX() + 
-                                       ", y=" + platform.getplatform().getY() + 
-                                       ", width=" + platform.getplatform().getWidth() + 
-                                       ", height=" + platform.getplatform().getHeight());
+                                       ", y=" + platform.getplatform().getY());
 */
                     // Check if the player's bottom edge intersects the platform's top edge
+
                     if (player.getBounds().intersects(platform.getplatform().getBounds())) {
                         platform.getplatform().setColor(java.awt.Color.GREEN); // Debug: successful collision
+                        
+                     if(player.getBounds().getY() > platform.getplatform().getBounds().getY()) { // if player is below collide with bottom
+                        player.setLocation(player.getX(), platform.getplatform().getY() + PLAYER_SIZE);
+                        velocity = 0;
+                        isCollidedY = true;
+                        return;
+                     }else { // player on top of platform
                         player.setLocation(player.getX(), platform.getplatform().getY() - PLAYER_SIZE);
                         velocity = 0;
                         isCollidedY = true;
                         return;
+                     }
                     }
                 }
             }
@@ -120,6 +127,7 @@ public class App extends GraphicsProgram implements KeyListener {
     }
 
     private class MovementKeyListener implements KeyListener {
+    	private long jumpStartTime;
         @Override
         public void keyPressed(KeyEvent e) {
             int keyCode = e.getKeyCode();
@@ -129,12 +137,9 @@ public class App extends GraphicsProgram implements KeyListener {
             if (keyCode == KeyEvent.VK_D) {
                 dIsPressed = true;
             }
-            if (keyCode == KeyEvent.VK_SPACE && isCollidedY) {
-                spaceIsPressed = true;
-                if (jumpPower < MAX_JUMP_POWER) {
-    	            jumpPower += JUMP_INCREMENT; // Gradually increase jump power
-    	            System.out.println(jumpPower);
-    	        }
+            if (keyCode == KeyEvent.VK_SPACE && isCollidedY && !spaceIsPressed) {
+            	spaceIsPressed = true;
+            	jumpStartTime = System.currentTimeMillis();
             }
         }
 
@@ -147,10 +152,12 @@ public class App extends GraphicsProgram implements KeyListener {
             if (keyCode == KeyEvent.VK_D) {
                 dIsPressed = false;
             }
-            if (keyCode == KeyEvent.VK_SPACE) {
-	            System.out.println("released");
-	            velocity = -jumpPower; // Use jumpPower as initial upward velocity
-                jumpPower = 10; // Reset jump power when space is released
+            if (keyCode == KeyEvent.VK_SPACE && isCollidedY) {
+            	long heldTime = (System.currentTimeMillis() - jumpStartTime)/10;// current time - time the user held space button
+            	//System.out.println(heldTime);
+            	jumpPower = Math.min((int)heldTime, MAX_JUMP_POWER);// gain the maximum jump if space button was held since it will be min
+                velocity = -jumpPower; // Set the initial upward velocity
+                jumpPower = 0;
                 spaceIsPressed = false;
             }
 
