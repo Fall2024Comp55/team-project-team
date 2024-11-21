@@ -118,6 +118,7 @@ public class App extends GraphicsProgram implements KeyListener {
                 }
             }
         }
+//        THIS IS REDUNDANT
         remove(player); // Remove the player
         add(player);    // Re-add the player to the canvas
     }
