@@ -19,14 +19,18 @@ public class Player {
     	//player = skin.getSkin();
     	//player.move(0, GRAVITY);
     	//for now while we do not have skins yet
+        
     playerImage = new GImage("FrogAvatarDamage#1.png");
-        
-     // Optionally, scale the image if zooming is required
+    //playerImage = new GImage("PushPlatform#1.png");
+    
+         
+    // Optionally, scale the image if zooming is required
     double scaleFactor = 5; // Change this value for different zoom levels, but don't go over 5
+    //double scaleFactor = 2; //Recommended scale factor for push platform ?
     playerImage.setSize(playerImage.getWidth() * scaleFactor, playerImage.getHeight() * scaleFactor);
-        
+            
     // Set default position
-    playerImage.setLocation(0, 0);
+    playerImage.setLocation(0, 0); 
     }
     
     public GImage getSkin() {
