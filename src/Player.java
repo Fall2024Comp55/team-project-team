@@ -65,6 +65,7 @@ public class Player {
         playerImage.move(0, -GRAVITY * 2);
     }
     
+//    
     public void setRow(int row) {
         this.posX = row;
     }
