@@ -10,7 +10,7 @@ public class App extends GraphicsProgram implements KeyListener {
     public static final int PLAYER_SIZE = 50;
 
     private ArrayList<GRect> platforms;
-    private GOval player;
+    private GRect player;
     private Timer time;
     private Grid grid; // Reference to the game grid
     private int gravity = 2;
@@ -19,7 +19,7 @@ public class App extends GraphicsProgram implements KeyListener {
     private final int MAX_JUMP_POWER = 30; // Maximum jump power
     private final int JUMP_INCREMENT = 5; // Power increase per frame
     private boolean isCollidedY = false;
-
+    private boolean isCollidedX = false;
     private boolean aIsPressed = false;
     private boolean dIsPressed = false;
     private boolean spaceIsPressed = false;
@@ -65,18 +65,39 @@ public class App extends GraphicsProgram implements KeyListener {
 
     public void checkCollision() {
         isCollidedY = false; // Reset collision state
-
+        isCollidedX = false;
         for (int i = 0; i < grid.getNumRows(); i++) {
             for (int j = 0; j < grid.getNumCols(); j++) {
                 if (grid.getSpace(i, j).hasPlatform()) {
                     Platforms platform = grid.getSpace(i, j).getPlatform();
-/*
-                    // Debug: Log positions
+
+                 /*   // Debug: Log positions
                     System.out.println("Player: x=" + player.getX() + ", y=" + player.getY() + 
                                        ", width=" + PLAYER_SIZE + ", height=" + PLAYER_SIZE);
                     System.out.println("Platform: x=" + platform.getplatform().getX() + 
                                        ", y=" + platform.getplatform().getY());
-*/
+                    */
+                    //System.out.println(platform.getplatform().getX());
+                    System.out.println(player.getX());
+                    
+                    //Check for x-axis collisions (left or right of platform)
+                    if (player.getBounds().intersects(platform.getplatform().getBounds())) {
+                        platform.getplatform().setColor(java.awt.Color.BLUE); // Debug: successful collision
+
+                        // Check if the player is roughly at the same vertical level as the platform
+                        if (player.getY() + PLAYER_SIZE > platform.getplatform().getY()) {
+
+                            if (player.getX()  < platform.getplatform().getX() + PLAYER_SIZE) { // Player hits platform from the left
+                                player.setLocation(player.getX() - 10, player.getY());
+                                isCollidedX = true;
+                              
+                            } else if (player.getX() <= platform.getplatform().getX() + platform.getWidth()) { // Player hits platform from the right
+                                player.setLocation(player.getX() + 10, player.getY());
+                                isCollidedX = true;
+                               
+                            }
+                        }
+                    }
                     // Check if the player's bottom edge intersects the platform's top edge
 
                     if (player.getBounds().intersects(platform.getplatform().getBounds())) {
@@ -93,14 +114,17 @@ public class App extends GraphicsProgram implements KeyListener {
                         isCollidedY = true;
                         return;
                      }
+                    
                     }
+                    
+                 
                 }
             }
         }
-      }
+     }
 
     public void createPlayer() {
-        player = new GOval(PROGRAM_WIDTH / 2, PROGRAM_HEIGHT - PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE);
+        player = new GRect(PROGRAM_WIDTH / 2, PROGRAM_HEIGHT - PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE);
         player.setFilled(true);
         player.setColor(java.awt.Color.RED); // Player's color
         add(player);
@@ -109,9 +133,8 @@ public class App extends GraphicsProgram implements KeyListener {
     public void createLevel() {
         // Define platforms in the grid
         grid.setPlatform(7, 2, 100, 20);
-        grid.setPlatform(5, 4, 100, 20);
-        grid.setPlatform(3, 6, 100, 20);
-        grid.setPlatform(1, 8, 100, 20); // Topmost platform
+        grid.setPlatform(6, 4, 100, 20);
+        
 
         // Add graphical representation of platforms
         for (int i = 0; i < grid.getNumRows(); i++) {
@@ -136,7 +159,7 @@ public class App extends GraphicsProgram implements KeyListener {
             if (keyCode == KeyEvent.VK_A) {
                 aIsPressed = true;
             }
-            if (keyCode == KeyEvent.VK_D) {
+            if (keyCode == KeyEvent.VK_D && !isCollidedX) {
                 dIsPressed = true;
             }
             if (keyCode == KeyEvent.VK_SPACE && isCollidedY && !spaceIsPressed) {
