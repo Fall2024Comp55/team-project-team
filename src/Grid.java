@@ -61,19 +61,19 @@ public class Grid {
 	 }
  }
  
- public void setPlatform(int row, int col, int width, int height) {
+ public void setPlatform(double row, double col, double width, double height) {
 	    double x = col * 50; // Assuming each grid cell is 50x50 pixels
 	    double y = row * 50;
 	    double w = width * 2;
 	    double h = height * 2;
 	    if (isValidPosition(row, col)) {
 	        Platforms platform = new Platforms(x, y, w, h);
-	        grid[row][col].setPlatform(platform);
+	        grid[(int)row][(int)col].setPlatform(platform);
 	    }
 	}
  
 
-public boolean isValidPosition(int row, int col) {
+public boolean isValidPosition(double row, double col) {
 	return row >= 0 && row <= numRows && col >= 0 && col <= numCols;
 }
 
