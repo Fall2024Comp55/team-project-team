@@ -25,6 +25,10 @@ public class App extends GraphicsProgram implements KeyListener {
     private boolean spaceIsPressed = false;
 
     public void run() {
+        GImage backGround = new GImage("media/JumpItBackground#1.png");
+        backGround.setSize(PROGRAM_WIDTH, PROGRAM_HEIGHT);
+        add(backGround);
+        
         grid = new Grid(10, 10); // Initialize a 10x10 grid
         platforms = new ArrayList<>();
         time = new Timer(10, this);
@@ -118,9 +122,6 @@ public class App extends GraphicsProgram implements KeyListener {
                 }
             }
         }
-//        THIS IS REDUNDANT
-        remove(player); // Remove the player
-        add(player);    // Re-add the player to the canvas
     }
 
     public void init() {
