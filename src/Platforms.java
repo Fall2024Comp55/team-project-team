@@ -1,3 +1,5 @@
+import java.awt.Color;
+
 import acm.graphics.GRect;
 
 public class Platforms {
@@ -12,7 +14,8 @@ public Platforms(double x, double y, double width, double height) {// rectangle 
 	this.height = height;
 	this.platform = new GRect(x,y,width,height);
 	this.platform.setFilled(true);
-    this.platform.setColor(java.awt.Color.GRAY); // Make platforms visible
+	Color transparent = new Color(0,0,0,0);// Makes platform transparent
+    this.platform.setColor(transparent); // Make platforms visible
 }
 
 /*
