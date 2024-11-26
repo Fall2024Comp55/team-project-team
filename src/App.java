@@ -82,7 +82,7 @@ public class App extends GraphicsProgram implements KeyListener {
                     
                     //Check for x-axis collisions (left or right of platform)
                     if (player.getBounds().intersects(platform.getplatform().getBounds())) {
-                        platform.getplatform().setColor(java.awt.Color.BLUE); // Debug: successful collision
+                        //platform.getplatform().setColor(java.awt.Color.BLUE); // Debug: successful collision
 
                         // Check if the player is roughly at the same vertical level as the platform
                         if (player.getY() + PLAYER_SIZE > platform.getplatform().getY()) {
@@ -101,7 +101,7 @@ public class App extends GraphicsProgram implements KeyListener {
                     // Check if the player's bottom edge intersects the platform's top edge
 
                     if (player.getBounds().intersects(platform.getplatform().getBounds())) {
-                        platform.getplatform().setColor(java.awt.Color.GREEN); // Debug: successful collision
+                        //platform.getplatform().setColor(java.awt.Color.GREEN); // Debug: successful collision
                         
                      if(player.getBounds().getY() > platform.getplatform().getBounds().getY()) { // if player is below collide with bottom
                         player.setLocation(player.getX(), platform.getplatform().getY() + PLAYER_SIZE);
@@ -135,14 +135,14 @@ public class App extends GraphicsProgram implements KeyListener {
         grid.setPlatform(9.1, 2.1, 140, 22); // floor
         grid.setPlatform(5.1, 7.3, 67, 122);// right platform
         grid.setPlatform(5.1, 0, 67, 122);// left platform
-        grid.setPlatform(1, 3.8, 60, 40);
+        grid.setPlatform(1, 3.8, 60, 40);// top platform
         
 
         // Add graphical representation of platforms
         for (int i = 0; i < grid.getNumRows(); i++) {
             for (int j = 0; j < grid.getNumCols(); j++) {
                 if (grid.getSpace(i, j).hasPlatform()) {
-                    Platforms platform = grid.getSpace(i, j).getPlatform();
+                	Platforms platform = grid.getSpace(i, j).getPlatform();
                     add(platform.getplatform());
                 }
             }
