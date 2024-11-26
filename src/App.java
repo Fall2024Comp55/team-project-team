@@ -78,7 +78,7 @@ public class App extends GraphicsProgram implements KeyListener {
                                        ", y=" + platform.getplatform().getY());
                     */
                     //System.out.println(platform.getplatform().getX());
-                    System.out.println(player.getX());
+                    //System.out.println(player.getX());
                     
                     //Check for x-axis collisions (left or right of platform)
                     if (player.getBounds().intersects(platform.getplatform().getBounds())) {
@@ -132,8 +132,10 @@ public class App extends GraphicsProgram implements KeyListener {
 
     public void createLevel() {
         // Define platforms in the grid
-        grid.setPlatform(7, 2, 100, 20);
-        grid.setPlatform(6, 4, 100, 20);
+        grid.setPlatform(9.1, 2.1, 140, 22); // floor
+        grid.setPlatform(5.1, 7.3, 67, 122);// right platform
+        grid.setPlatform(5.1, 0, 67, 122);// left platform
+        grid.setPlatform(1, 3.8, 60, 40);
         
 
         // Add graphical representation of platforms
