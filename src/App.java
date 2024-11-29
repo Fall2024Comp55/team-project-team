@@ -3,10 +3,11 @@ import javax.swing.Timer;
 import java.awt.event.*;
 import acm.graphics.*;
 import acm.program.*;
+import java.awt.*;
 
 public class App extends GraphicsProgram implements KeyListener {
-    public static final int PROGRAM_WIDTH = 500;
-    public static final int PROGRAM_HEIGHT = 500;
+    //public static final int PROGRAM_WIDTH = 500;
+    //public static final int PROGRAM_HEIGHT = 500;
     public static final int PLAYER_SIZE = 50;
 
     private ArrayList<GRect> platforms;
@@ -26,7 +27,7 @@ public class App extends GraphicsProgram implements KeyListener {
 
     public void run() {
         GImage backGround = new GImage("media/JumpItBackground#1.png");
-        backGround.setSize(PROGRAM_WIDTH, PROGRAM_HEIGHT);
+        backGround.setSize(getWidth(), getHeight());
         add(backGround);
         
         grid = new Grid(10, 10); // Initialize a 10x10 grid
@@ -48,8 +49,8 @@ public class App extends GraphicsProgram implements KeyListener {
     	checkCollision();
 
     	// Prevent falling through the bottom of the screen
-    	if (player.getY() > PROGRAM_HEIGHT - PLAYER_SIZE) {
-    	    player.setLocation(player.getX(), PROGRAM_HEIGHT - PLAYER_SIZE + 1);
+    	if (player.getY() > getHeight() - PLAYER_SIZE) {
+    	    player.setLocation(player.getX(), getHeight() - PLAYER_SIZE + 1);
     	    velocity = 0;
     	    isCollidedY = true; // Reset to grounded state
     	} // Check for collisions with platforms
@@ -124,7 +125,7 @@ public class App extends GraphicsProgram implements KeyListener {
      }
 
     public void createPlayer() {
-        player = new GRect(PROGRAM_WIDTH / 2, PROGRAM_HEIGHT - PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE);
+        player = new GRect(getWidth() / 2, getHeight() - PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE);
         player.setFilled(true);
         player.setColor(java.awt.Color.RED); // Player's color
         add(player);
@@ -150,7 +151,13 @@ public class App extends GraphicsProgram implements KeyListener {
     }
 
     public void init() {
-        setSize(PROGRAM_WIDTH, PROGRAM_HEIGHT);
+    	// Get the screen dimensions
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenWidth = (int) screenSize.getWidth();
+        int screenHeight = (int) screenSize.getHeight();
+
+        // Set the program width and height to the screen size
+        setSize(screenWidth, screenHeight);
     }
 
     private class MovementKeyListener implements KeyListener {
