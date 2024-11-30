@@ -30,12 +30,12 @@ public class App extends GraphicsProgram implements KeyListener {
         backGround.setSize(getWidth(), getHeight());
         add(backGround);
         
-        grid = new Grid(10, 10); // Initialize a 10x10 grid
+        grid = new Grid(25, 25); // Initialize a 10x10 grid
         platforms = new ArrayList<>();
         time = new Timer(10, this);
         time.start();
-        createPlayer();
         createLevel();
+        createPlayer();
         addKeyListeners(new MovementKeyListener());
     }
 
@@ -125,18 +125,25 @@ public class App extends GraphicsProgram implements KeyListener {
      }
 
     public void createPlayer() {
-        player = new GRect(getWidth() / 2, getHeight() - PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE);
+        player = new GRect(getWidth() / 2 - PLAYER_SIZE, getHeight()/2 - PLAYER_SIZE , PLAYER_SIZE, PLAYER_SIZE );
         player.setFilled(true);
         player.setColor(java.awt.Color.RED); // Player's color
+        //System.out.println(player.getBounds().getHeight());
+        //System.out.println(player.getBounds().getWidth());
+        //System.out.println(player.getBounds().getX());
+        //System.out.println(player.getBounds().getY());
+
+
+
         add(player);
     }
 
     public void createLevel() {
         // Define platforms in the grid
-        grid.setPlatform(9.1, 2.1, 140, 22); // floor
-        grid.setPlatform(5.1, 7.3, 67, 122);// right platform
-        grid.setPlatform(5.1, 0, 67, 122);// left platform
-        grid.setPlatform(1, 3.8, 60, 40);// top platform
+        grid.setPlatform(15.45, 7, 430, 22); // floor
+        grid.setPlatform(8.7, 22.7, 199, 175);// right platform
+        grid.setPlatform(8.7, 0, 207, 175);// left platform
+        grid.setPlatform(1.8, 11.9, 179, 58);// top platform
         
 
         // Add graphical representation of platforms
@@ -154,7 +161,7 @@ public class App extends GraphicsProgram implements KeyListener {
     	// Get the screen dimensions
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int screenWidth = (int) screenSize.getWidth();
-        int screenHeight = (int) screenSize.getHeight();
+        int screenHeight = (int) screenSize.getHeight() - 50;
 
         // Set the program width and height to the screen size
         setSize(screenWidth, screenHeight);
