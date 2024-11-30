@@ -57,9 +57,12 @@ public class App extends GraphicsProgram implements KeyListener {
 
         // Handle horizontal movement
         if (aIsPressed) {
+        	if(player.getX() > 0) {
             player.move(-5, 0);
+        	}
         }
         if (dIsPressed) {
+        	if(player.getX() + PLAYER_SIZE/2 < getWidth() - PLAYER_SIZE)
             player.move(5, 0);
         }
     }
