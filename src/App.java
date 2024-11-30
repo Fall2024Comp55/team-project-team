@@ -17,7 +17,7 @@ public class App extends GraphicsProgram implements KeyListener {
     private int gravity = 2;
     private int velocity = 0;
     private int jumpPower = 0; // Tracks how long the space key is held
-    private final int MAX_JUMP_POWER = 30; // Maximum jump power
+    private final int MAX_JUMP_POWER = 45; // Maximum jump power
     private final int JUMP_INCREMENT = 5; // Power increase per frame
     private boolean isCollidedY = false;
     private boolean isCollidedX = false;
@@ -57,10 +57,10 @@ public class App extends GraphicsProgram implements KeyListener {
 
         // Handle horizontal movement
         if (aIsPressed) {
-            player.move(-3, 0);
+            player.move(-5, 0);
         }
         if (dIsPressed) {
-            player.move(3, 0);
+            player.move(5, 0);
         }
     }
 
