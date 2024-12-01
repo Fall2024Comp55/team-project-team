@@ -33,12 +33,12 @@ public class Jumpmap {
 
     // Method to move the player
     public void movePlayer(int dx, int dy) {
-        int newRow = player.getPosX() + dx;
-        int newCol = player.getPosY() + dy;
+        int newRow = (int) (player.getHitbox().getX() + dx);
+        int newCol = (int) (player.getHitbox().getY() + dy);
 
         if (grid.isValidPosition(newRow, newCol)) {
-            player.setRow(newRow);
-            player.setCol(newCol);
+            player.move(newRow,newCol);
+            
 
             // Collision detection
             Space currentSpace = grid.getSpace(newRow, newCol);
@@ -77,7 +77,7 @@ public class Jumpmap {
     }
     
     public static void main(String[] args) {
-        Player player = new Player();
+        Player player = new Player(2,2);
         Jumpmap jumpmap = new Jumpmap(10, 10, player);
 
         jumpmap.addPlatform(2, 3, 100, 20);
