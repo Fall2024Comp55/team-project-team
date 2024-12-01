@@ -1,76 +1,71 @@
 import javax.swing.Timer;
+
+import java.awt.Color;
 import java.awt.event.*;
 
 import acm.graphics.*;
 
 public class Player {
-    public static final int RUNSPEED = 3;
-    public static final int GRAVITY = 3;
-    
+    public static final int RUNSPEED = 5;
+    public static final int GRAVITY = 2;
+    public static final int PLAYER_SIZE = 50;
+
     private GImage playerImage;
-	private Skin skin = new Skin();
-	private int posX;
-	private int posY;
-	private boolean isFacingLeft;
-    private int runDirection = 0;
-    private int jumpVelocity = 0;
-    
-    public Player() {
-    	//player = skin.getSkin();
-    	//player.move(0, GRAVITY);
-    	//for now while we do not have skins yet
+    private GRect hitbox; // Add a GRect as the hitbox
+    private Skin skin = new Skin();
+
+    public Player(double startX, double startY) {
+        // Initialize player image
+        playerImage = new GImage("FrogAvatarDamage#1.png");
+        double scaleFactor = 1;
+        playerImage.setSize(playerImage.getWidth()* scaleFactor, playerImage.getHeight()* scaleFactor);
+        playerImage.setLocation(startX - PLAYER_SIZE, startY - PLAYER_SIZE);
+        System.out.println(playerImage.getLocation());
+
+        // Initialize the hitbox
+        hitbox = new GRect(App.PROG_WIDTH- PLAYER_SIZE, App.PROG_HEIGHT- PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE);
+        hitbox.setFilled(false); // Invisible hitbox for collision
+        hitbox.setColor(Color.RED); // Optional: Debugging aid to see the hitbox
+        System.out.println(hitbox.getLocation());
         
-    playerImage = new GImage("FrogAvatarDamage#1.png");
-    //playerImage = new GImage("PushPlatform#1.png");
-    
-         
-    // Optionally, scale the image if zooming is required
-    double scaleFactor = 5; // Change this value for different zoom levels, but don't go over 5
-    //double scaleFactor = 2; //Recommended scale factor for push platform ?
-    playerImage.setSize(playerImage.getWidth() * scaleFactor, playerImage.getHeight() * scaleFactor);
-            
-    // Set default position
-    playerImage.setLocation(0, 0); 
+        double imageOffsetX = (hitbox.getWidth() - playerImage.getWidth()) / 2;
+        double imageOffsetY = (hitbox.getHeight() - playerImage.getHeight()) / 2;
+        playerImage.setLocation(startX + imageOffsetX, startY + imageOffsetY);
     }
-    
+
     public GImage getSkin() {
         return playerImage;
     }
-    
-    public int getPosX() {
-        return posX;
-    }
-    
-    public int getPosY() {
-        return posY;
-    }
-    
-    public void setRunDirection(int speed) {
-        runDirection = speed;
-    }
-    
-    public void setJumpVelocity(int speed) {
-        jumpVelocity = speed;
-    }
-    
-    public void moveLeft() {
-        playerImage.move(-RUNSPEED, 0);
-    }
-    
-    public void moveRight() {
-        playerImage.move(RUNSPEED, 0);
-    }
-    
-    public void jump() {
-        playerImage.move(0, -GRAVITY * 2);
-    }
-    
-//    
-    public void setRow(int row) {
-        this.posX = row;
+
+    public GRect getHitbox() {
+        return hitbox;
     }
 
-    public void setCol(int col) {
-        this.posY = col;
+    public void moveLeft() {
+        playerImage.move(-RUNSPEED, 0);
+        hitbox.move(-RUNSPEED, 0);
+    }
+
+    public void moveRight() {
+        playerImage.move(RUNSPEED, 0);
+        hitbox.move(RUNSPEED, 0);
+    }
+
+    public void move(double dx, double dy) {
+        playerImage.move(dx, dy);
+        hitbox.move(dx, dy);
+    }
+
+    public void setLocation(double x, double y) {
+        hitbox.setLocation(x, y);
+        // Recalculate the offsets for the image
+        double imageOffsetX = (hitbox.getWidth() - playerImage.getWidth()) / 2;
+        double imageOffsetY = (hitbox.getHeight() - playerImage.getHeight()) / 2;
+        playerImage.setLocation(x + imageOffsetX, y + imageOffsetY);
+    }
+    
+    public void jump(double velocity) {
+        playerImage.move(0, velocity); // Apply velocity for upward or downward motion
+        hitbox.move(0, velocity);     // Ensure hitbox follows the player
     }
 }
