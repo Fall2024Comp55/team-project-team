@@ -54,7 +54,7 @@ public abstract class Trap {
             	if (!animationTimer.isRunning()) {
                     animationTimer.start();
                 }
-            	player.setJumpVelocity(-launchPower); // Launch player upwards by modifying jump velocity
+            player.jump(-launchPower); // Launch player upwards by modifying jump velocity
             }
         }
 
@@ -65,8 +65,8 @@ public abstract class Trap {
         
         private boolean isPlayerOnTrap(Player player) {
             // Check if the player’s position overlaps with the PushSpring’s position
-            return player.getPosY() == this.posY && 
-                   player.getPosX() >= this.posX && player.getPosX() <= this.posX + trap.getWidth();
+            return player.getHitbox().getY() == this.posY && 
+                   player.getHitbox().getX() >= this.posX && player.getHitbox().getX() <= this.posX + trap.getWidth();
         }
     }
     
@@ -113,9 +113,9 @@ public abstract class Trap {
         public void action(Player player) {
             // Apply wind effect regardless of whether the player is on the ground or in midair
             if (direction.equals("right")) {
-                player.setRunDirection(windPower); // Push player right
+                player.move(windPower,0); // Push player right
             } else if (direction.equals("left")) {
-                player.setRunDirection(-windPower); // Push player left
+                player.move(-windPower,0); // Push player left
             }
         }
     }
