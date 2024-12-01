@@ -8,7 +8,7 @@ public class Test extends GraphicsProgram {
     private Player player;
 
     public void run() {
-    	player = new Player();
+    	player = new Player(1,1);
         add(player.getSkin());
     }
     public void init() {
