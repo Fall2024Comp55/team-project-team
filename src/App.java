@@ -6,8 +6,8 @@ import acm.program.*;
 import java.awt.*;
 
 public class App extends GraphicsProgram implements KeyListener {
-    //public static final int PROGRAM_WIDTH = 500;
-    //public static final int PROGRAM_HEIGHT = 500;
+    public static final double PROGRAM_WIDTH = 1550.0;
+    public static final double PROGRAM_HEIGHT = 851.0;
     public static final int PLAYER_SIZE = 50;
 
     private ArrayList<GRect> platforms;
@@ -27,7 +27,11 @@ public class App extends GraphicsProgram implements KeyListener {
 
     public void run() {
         GImage backGround = new GImage("media/JumpItBackground#1.png");
-        backGround.setSize(getWidth(), getHeight());
+        
+        backGround.setSize(PROGRAM_WIDTH, PROGRAM_HEIGHT);
+        //System.out.println("Static width"+getWidth());
+        //System.out.println("Static height" + getHeight());
+
         add(backGround);
         
         grid = new Grid(25, 25); // Initialize a 10x10 grid
