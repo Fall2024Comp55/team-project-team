@@ -14,7 +14,7 @@ public Platforms(double x, double y, double width, double height) {// rectangle 
 	this.height = height;
 	this.platform = new GRect(x,y,width,height);
 	this.platform.setFilled(true);
-	Color transparent = new Color(0,0,0,200);// Makes platform transparent
+	Color transparent = new Color(0,0,0,0);// Makes platform transparent
     this.platform.setColor(transparent); // Make platforms visible
 }
 
