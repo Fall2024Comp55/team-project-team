@@ -17,16 +17,20 @@ public class App extends GraphicsProgram implements KeyListener {
     private int gravity = 2;
     private int velocity = 0;
     private int jumpPower = 0; // Tracks how long the space key is held
-    private final int MAX_JUMP_POWER = 45; // Maximum jump power
+    private final int MAX_JUMP_POWER = 40; // Maximum jump power
     private final int JUMP_INCREMENT = 5; // Power increase per frame
     private boolean isCollidedY = false;
     private boolean isCollidedX = false;
     private boolean aIsPressed = false;
     private boolean dIsPressed = false;
     private boolean spaceIsPressed = false;
+    private String currentBackground = "media/JumpItBackground#1.png";
+    private String previousBackground = "media/JumpItBackground#1.png";
+    private int backgroundNumber = 1;
+
 
     public void run() {
-        GImage backGround = new GImage("media/JumpItBackground#1.png");
+        GImage backGround = new GImage(currentBackground);
         
         backGround.setSize(PROGRAM_WIDTH, PROGRAM_HEIGHT);
         //System.out.println("Static width"+getWidth());
@@ -34,11 +38,11 @@ public class App extends GraphicsProgram implements KeyListener {
 
         add(backGround);
         
-        grid = new Grid(25, 25); // Initialize a 10x10 grid
+        grid = new Grid(25, 100); // Initialize a 10x10 grid
         platforms = new ArrayList<>();
         time = new Timer(10, this);
         time.start();
-        createLevel();
+        createLevel(backgroundNumber);
         createPlayer();
         addKeyListeners(new MovementKeyListener());
     }
@@ -53,6 +57,7 @@ public class App extends GraphicsProgram implements KeyListener {
     	    velocity += gravity;
 
     	    checkCollision();
+    	    
 
     	    // Prevent falling through the bottom of the screen
     	    if (player.getHitbox().getY() > getHeight() - PLAYER_SIZE) {
@@ -60,7 +65,7 @@ public class App extends GraphicsProgram implements KeyListener {
     	        velocity = 0;
     	        isCollidedY = true; // Reset to grounded state
     	    }
-
+    	    
     	    // Handle horizontal movement
     	    if (aIsPressed) {
     	        if (player.getHitbox().getX() > 0) {
@@ -140,12 +145,22 @@ public class App extends GraphicsProgram implements KeyListener {
     	 add(player.getHitbox()); // Add the hitbox (invisible)
     }
 
-    public void createLevel() {
+    public void createLevel(int num) {
         // Define platforms in the grid
+    	if(num == 1) {
         grid.setPlatform(15.45, 7, 430, 22); // floor
         grid.setPlatform(8.7, 22.7, 199, 175);// right platform
         grid.setPlatform(8.7, 0, 207, 175);// left platform
         grid.setPlatform(1.8, 11.9, 179, 58);// top platform
+    	}
+    	else if(num == 2) {
+    		grid.setPlatform(3.8, 0, 125, 120);// left platform
+    		grid.setPlatform(5, 7.6, 120, 80);// left platform
+    		grid.setPlatform(9.5, 16.4, 120, 30);// top platform
+    		grid.setPlatform(9.4, 26.5, 100, 40);// right platform
+    		grid.setPlatform(14, 19, 158, 40);
+    		
+    	}
         
 
         // Add graphical representation of platforms
@@ -157,6 +172,46 @@ public class App extends GraphicsProgram implements KeyListener {
                 }
             }
         }
+    }
+    
+    public void mapTransition() {
+    	int curr = backgroundNumber + 1;
+    	previousBackground = "media/JumpItBackground#"+backgroundNumber+".png";
+    	currentBackground = "media/JumpItBackground#"+curr+".png";
+        
+         if (player.getHitbox().getY() < 50) {
+            // Jumping out of the top of the screen
+            System.out.println(curr);
+            System.out.println(currentBackground);
+            backgroundNumber += 1;
+            loadMap(currentBackground);
+            
+        }
+       
+    }
+    
+    public void resetGrid() {
+        for (int i = 0; i < grid.getNumRows(); i++) {
+            for (int j = 0; j < grid.getNumCols(); j++) {
+                grid.getSpace(i, j).clearPlatform(); // Assuming `clearPlatform()` removes any platform in the space
+            }
+        }
+    }
+
+    private void loadMap(String backgroundPath) {
+        removeAll(); // Clear the screen
+
+        // Set the new background
+        GImage background = new GImage(backgroundPath);
+        background.setSize(PROGRAM_WIDTH, PROGRAM_HEIGHT);
+        add(background);
+
+        // Redraw platforms and player
+        System.out.println(backgroundNumber);
+        System.out.println(player.getHitbox().getY());
+        resetGrid(); // Clear existing platforms from the gridgrid = new Grid(25, 100); // Initialize a 10x10 grid
+        createLevel(backgroundNumber); // Add platforms for the new map
+        createPlayer();
     }
 
     public void init() {
@@ -202,6 +257,7 @@ public class App extends GraphicsProgram implements KeyListener {
                 velocity = -jumpPower; // Set the initial upward velocity
                 player.jump(velocity);
                 jumpPower = 0;
+                mapTransition();
                 spaceIsPressed = false;
             }
 

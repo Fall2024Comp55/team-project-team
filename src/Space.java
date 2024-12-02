@@ -43,6 +43,10 @@ public class Space {
 		this.platform = platform;
 	}
 	
+	public void clearPlatform() {
+        this.platform = null; // Clear the platform
+    }
+	
 	public boolean hasPlatform() {
 		return platform != null;
 	}
