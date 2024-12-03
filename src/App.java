@@ -253,25 +253,25 @@ public class App extends GraphicsProgram implements KeyListener {
         velocity = 0; 
     }
 
-    //FINISH LEVELS FIRST THEN ADD THIS TO THE GAME, UNLESS FOR TESTING 
-    //public void loseLife() {
-        //if (lives > 0) {
-           // lives--;
-          //  displayLives();
-    //    }
-      //  if (lives == 0) {
-         //   gameOver();
-    //    }
-  //  }
     
- //  private void gameOver() {
-     //   removeAll();
-     //   GLabel gameOverLabel = new GLabel("Game Over");
-     //   gameOverLabel.setFont("SansSerif-bold-36");
-     //   gameOverLabel.setColor(Color.RED);
-    //    gameOverLabel.setLocation(PROGRAM_WIDTH / 2 - gameOverLabel.getWidth() / 2, PROGRAM_HEIGHT / 2);
-      //  add(gameOverLabel);
-  //  }
+    public void loseLife() {
+        if (lives > 0) {
+            lives--;
+            displayLives();
+      }
+        if (lives == 0) {
+           gameOver();
+       }
+    }
+    
+   private void gameOver() {
+        removeAll();
+        GLabel gameOverLabel = new GLabel("Game Over");
+       gameOverLabel.setFont("SansSerif-bold-36");
+        gameOverLabel.setColor(Color.RED);
+       gameOverLabel.setLocation(PROGRAM_WIDTH / 2 - gameOverLabel.getWidth() / 2, PROGRAM_HEIGHT / 2);
+        add(gameOverLabel);
+    }
 
     private class MovementKeyListener implements KeyListener {
     	private long jumpStartTime;
