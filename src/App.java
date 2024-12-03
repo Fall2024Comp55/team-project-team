@@ -27,6 +27,8 @@ public class App extends GraphicsProgram implements KeyListener {
     private String currentBackground = "media/JumpItBackground#1.png";
     private String previousBackground = "media/JumpItBackground#1.png";
     private int backgroundNumber = 1;
+    private int lives = 3; // Default number of lives
+    private ArrayList<GImage> lifeIcons = new ArrayList<>();
 
 
     public void run() {
@@ -44,6 +46,7 @@ public class App extends GraphicsProgram implements KeyListener {
         time.start();
         createLevel(backgroundNumber);
         createPlayer();
+        displayLives();
         addKeyListeners(new MovementKeyListener());
     }
 
@@ -64,6 +67,9 @@ public class App extends GraphicsProgram implements KeyListener {
     	        player.setLocation(player.getHitbox().getX(), getHeight() - PLAYER_SIZE + 1);
     	        velocity = 0;
     	        isCollidedY = true; // Reset to grounded state
+    	        loseLife(); // Lose a life
+                resetPlayerPosition(); // Reset player to a safe starting position
+
     	    }
     	    
     	    // Handle horizontal movement
@@ -222,6 +228,49 @@ public class App extends GraphicsProgram implements KeyListener {
 
         // Set the program width and height to the screen size
         setSize(screenWidth, screenHeight);
+    }
+    
+    private void displayLives() {
+        // Clear existing life icons
+        for (GImage icon : lifeIcons) {
+            remove(icon);
+        }
+        lifeIcons.clear();
+
+        // Add life icons based on the number of lives
+        for (int i = 0; i < lives; i++) {
+            GImage lifeIcon = new GImage("media/LifeIcon.png");
+            lifeIcon.setSize(40, 40); // Set a consistent size for the life icon
+            lifeIcon.setLocation(10 + (i * 50), 10); // Arrange icons horizontally
+            add(lifeIcon);
+            lifeIcons.add(lifeIcon);
+        }
+    }
+    
+    private void resetPlayerPosition() {
+        double startX = PROGRAM_WIDTH / 2 - PLAYER_SIZE / 2; // Centered horizontally
+        double startY = getHeight() - PLAYER_SIZE - 50;      // Near the bottom of the screen
+        player.setLocation(startX, startY);
+        velocity = 0; // Reset velocity
+    }
+
+    public void loseLife() {
+        if (lives > 0) {
+            lives--;
+            displayLives();
+        }
+        if (lives == 0) {
+            gameOver();
+        }
+    }
+    
+    private void gameOver() {
+        removeAll();
+        GLabel gameOverLabel = new GLabel("Game Over");
+        gameOverLabel.setFont("SansSerif-bold-36");
+        gameOverLabel.setColor(Color.RED);
+        gameOverLabel.setLocation(PROGRAM_WIDTH / 2 - gameOverLabel.getWidth() / 2, PROGRAM_HEIGHT / 2);
+        add(gameOverLabel);
     }
 
     private class MovementKeyListener implements KeyListener {
