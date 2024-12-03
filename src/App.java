@@ -231,7 +231,6 @@ public class App extends GraphicsProgram implements KeyListener {
     }
     
     private void displayLives() {
-        // Clear existing life icons
         for (GImage icon : lifeIcons) {
             remove(icon);
         }
@@ -251,7 +250,7 @@ public class App extends GraphicsProgram implements KeyListener {
         double startX = PROGRAM_WIDTH / 2 - PLAYER_SIZE / 2; // Centered horizontally
         double startY = getHeight() - PLAYER_SIZE - 50;      // Near the bottom of the screen
         player.setLocation(startX, startY);
-        velocity = 0; // Reset velocity
+        velocity = 0; 
     }
 
     public void loseLife() {
