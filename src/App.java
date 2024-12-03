@@ -67,7 +67,7 @@ public class App extends GraphicsProgram implements KeyListener {
     	        player.setLocation(player.getHitbox().getX(), getHeight() - PLAYER_SIZE + 1);
     	        velocity = 0;
     	        isCollidedY = true; // Reset to grounded state
-    	        loseLife(); // Lose a life
+    	      //  loseLife(); 
                 resetPlayerPosition(); // Reset player to a safe starting position
 
     	    }
@@ -253,24 +253,25 @@ public class App extends GraphicsProgram implements KeyListener {
         velocity = 0; 
     }
 
-    public void loseLife() {
-        if (lives > 0) {
-            lives--;
-            displayLives();
-        }
-        if (lives == 0) {
-            gameOver();
-        }
-    }
+    //FINISH LEVELS FIRST THEN ADD THIS TO THE GAME, UNLESS FOR TESTING 
+    //public void loseLife() {
+        //if (lives > 0) {
+           // lives--;
+          //  displayLives();
+    //    }
+      //  if (lives == 0) {
+         //   gameOver();
+    //    }
+  //  }
     
-    private void gameOver() {
-        removeAll();
-        GLabel gameOverLabel = new GLabel("Game Over");
-        gameOverLabel.setFont("SansSerif-bold-36");
-        gameOverLabel.setColor(Color.RED);
-        gameOverLabel.setLocation(PROGRAM_WIDTH / 2 - gameOverLabel.getWidth() / 2, PROGRAM_HEIGHT / 2);
-        add(gameOverLabel);
-    }
+ //  private void gameOver() {
+     //   removeAll();
+     //   GLabel gameOverLabel = new GLabel("Game Over");
+     //   gameOverLabel.setFont("SansSerif-bold-36");
+     //   gameOverLabel.setColor(Color.RED);
+    //    gameOverLabel.setLocation(PROGRAM_WIDTH / 2 - gameOverLabel.getWidth() / 2, PROGRAM_HEIGHT / 2);
+      //  add(gameOverLabel);
+  //  }
 
     private class MovementKeyListener implements KeyListener {
     	private long jumpStartTime;
