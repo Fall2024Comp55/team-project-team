@@ -29,9 +29,9 @@ public class App extends GraphicsProgram implements KeyListener {
     private int backgroundNumber = 1;
     private int lives = 3; // Default number of lives
     private ArrayList<GImage> lifeIcons = new ArrayList<>();
-    private int jumpCounter = 10; 
+    private int jumpCounter = 20; 
     private ArrayList<GLabel> jumpCounterLabels = new ArrayList<>(); 
-
+    private boolean fellDown = false;
 
     public void run() {
         GImage backGround = new GImage(currentBackground);
@@ -73,6 +73,8 @@ public class App extends GraphicsProgram implements KeyListener {
     	        player.setLocation(player.getHitbox().getX(), getHeight() - PLAYER_SIZE + 1);
     	        velocity = 0;
     	        isCollidedY = true; // Reset to grounded state
+    	        System.out.println("Player Y pos" + player.getHitbox().getY());
+    	        System.out.println("Height" + getHeight());
     	        loseLife(); //Disable this when testing 
     	    }
     	    
@@ -105,7 +107,6 @@ public class App extends GraphicsProgram implements KeyListener {
                     */
                     //System.out.println(platform.getplatform().getX());
                     //System.out.println(player.getX());
-                    
                     //Check for x-axis collisions (left or right of platform)
                     if (player.getHitbox().getBounds().intersects(platform.getplatform().getBounds())) {
                         //platform.getplatform().setColor(java.awt.Color.BLUE); // Debug: successful collision
@@ -128,7 +129,6 @@ public class App extends GraphicsProgram implements KeyListener {
 
                     if (player.getHitbox().getBounds().intersects(platform.getplatform().getBounds())) {
                         //platform.getplatform().setColor(java.awt.Color.GREEN); // Debug: successful collision
-                        
                      if(player.getHitbox().getBounds().getY() > platform.getplatform().getBounds().getY()) { // if player is below collide with bottom
                         player.setLocation(player.getHitbox().getX(), platform.getplatform().getY() + PLAYER_SIZE);
                         velocity = 0;
@@ -138,6 +138,7 @@ public class App extends GraphicsProgram implements KeyListener {
                         player.setLocation(player.getHitbox().getX(), platform.getplatform().getY() - PLAYER_SIZE);
                         velocity = 0;
                         isCollidedY = true;
+                        fellDown = false;
                         return;
                      }
                     
@@ -217,8 +218,8 @@ public class App extends GraphicsProgram implements KeyListener {
         add(background);
 
         // Redraw platforms and player
-        System.out.println(backgroundNumber);
-        System.out.println(player.getHitbox().getY());
+        //System.out.println(backgroundNumber);
+        //System.out.println(player.getHitbox().getY());
         resetGrid(); // Clear existing platforms from the gridgrid = new Grid(25, 100); // Initialize a 10x10 grid
         createLevel(backgroundNumber); // Add platforms for the new map
         createPlayer();
@@ -260,20 +261,16 @@ public class App extends GraphicsProgram implements KeyListener {
     }
 
     private void loseLife() {
-        if (jumpCounter <= 0) {
+        if (jumpCounter <= 0 ||lives <= 0) {
             gameOver(); 
         }
-        else {
-            
-            if (lives > 0) {
-                lives--;
-                displayLives();
-            }
-            if (lives == 0) {
-                gameOver();
-            }
+        else if (!fellDown){
+        	lives--;
+            displayLives();
+            fellDown = true;
         }
     }
+    
     
    private void gameOver() {
         removeAll();
