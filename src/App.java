@@ -307,12 +307,12 @@ public class App extends GraphicsProgram implements KeyListener {
         @Override
         public void keyPressed(KeyEvent e) {
             int keyCode = e.getKeyCode();
-            if (keyCode == KeyEvent.VK_A && keyCode != KeyEvent.VK_SPACE) {
+            if (keyCode == KeyEvent.VK_A ) {
                 aIsPressed = true;
                 player.moveLeft();
             }
             
-            if (keyCode == KeyEvent.VK_D && !isCollidedX) {
+            if (keyCode == KeyEvent.VK_D) {
                 dIsPressed = true;
                 player.moveRight();
 
