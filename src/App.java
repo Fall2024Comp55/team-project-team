@@ -166,8 +166,8 @@ public class App extends GraphicsProgram implements KeyListener {
         grid.setPlatform(1.8, 11.9, 179, 58);// top platform
     	}
     	else if(num == 2) {
-    		grid.setPlatform(3.8, 0, 125, 120);// left platform
-    		grid.setPlatform(5, 7.6, 120, 80);// left platform
+    		grid.setPlatform(3.8, 0, 125, 40);// left platform
+    		grid.setPlatform(5, 7.6, 120, 40);// left platform
     		grid.setPlatform(9.5, 16.4, 120, 30);// top platform
     		grid.setPlatform(9.4, 26.5, 100, 40);// right platform
     		grid.setPlatform(14, 19, 158, 40);
