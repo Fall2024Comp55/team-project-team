@@ -154,6 +154,7 @@ public class App extends GraphicsProgram implements KeyListener {
     	 player = new Player(App.PROG_WIDTH, App.PROG_HEIGHT);
     	 add(player.getSkin()); // Add the visual representation
     	 add(player.getHitbox()); // Add the hitbox (invisible)
+    	 
     }
 
     public void createLevel(int num) {
@@ -306,17 +307,23 @@ public class App extends GraphicsProgram implements KeyListener {
         @Override
         public void keyPressed(KeyEvent e) {
             int keyCode = e.getKeyCode();
-            if (keyCode == KeyEvent.VK_A) {
+            if (keyCode == KeyEvent.VK_A && keyCode != KeyEvent.VK_SPACE) {
                 aIsPressed = true;
+                player.moveLeft();
             }
+            
             if (keyCode == KeyEvent.VK_D && !isCollidedX) {
                 dIsPressed = true;
+                player.moveRight();
+
             }
             if (keyCode == KeyEvent.VK_SPACE && isCollidedY && !spaceIsPressed) {
             	spaceIsPressed = true;
             	jumpStartTime = System.currentTimeMillis();
             	jumpCounter--; 
                 updateJumpCounterDisplay(); 
+                
+            
             }
         }
 
@@ -325,9 +332,13 @@ public class App extends GraphicsProgram implements KeyListener {
             int keyCode = e.getKeyCode();
             if (keyCode == KeyEvent.VK_A) {
                 aIsPressed = false;
+                player.stopMoving();
+                
             }
             if (keyCode == KeyEvent.VK_D) {
                 dIsPressed = false;
+                player.stopMoving();
+                
             }
             if (keyCode == KeyEvent.VK_SPACE && isCollidedY) {
             	long heldTime = (System.currentTimeMillis() - jumpStartTime)/10;// current time - time the user held space button
@@ -338,6 +349,7 @@ public class App extends GraphicsProgram implements KeyListener {
                 jumpPower = 0;
                 mapTransition();
                 spaceIsPressed = false;
+
             }
 
         }
