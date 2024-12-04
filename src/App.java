@@ -29,6 +29,8 @@ public class App extends GraphicsProgram implements KeyListener {
     private int backgroundNumber = 1;
     private int lives = 3; // Default number of lives
     private ArrayList<GImage> lifeIcons = new ArrayList<>();
+    private int jumpCounter = 10; 
+    private ArrayList<GLabel> jumpCounterLabels = new ArrayList<>(); 
 
 
     public void run() {
@@ -47,6 +49,7 @@ public class App extends GraphicsProgram implements KeyListener {
         createLevel(backgroundNumber);
         createPlayer();
         displayLives();
+        updateJumpCounterDisplay();
         addKeyListeners(new MovementKeyListener());
     }
 
@@ -61,7 +64,10 @@ public class App extends GraphicsProgram implements KeyListener {
 
     	    checkCollision();
     	    
-
+    	    if (jumpCounter <= 0) {
+    	        loseLife();
+    	    }
+    	    
     	    // Prevent falling through the bottom of the screen
     	    if (player.getHitbox().getY() > getHeight() - PLAYER_SIZE) {
     	        player.setLocation(player.getHitbox().getX(), getHeight() - PLAYER_SIZE + 1);
@@ -217,6 +223,7 @@ public class App extends GraphicsProgram implements KeyListener {
         createLevel(backgroundNumber); // Add platforms for the new map
         createPlayer();
         displayLives();
+        updateJumpCounterDisplay();
     }
 
     public void init() {
@@ -252,15 +259,20 @@ public class App extends GraphicsProgram implements KeyListener {
         velocity = 0; 
     }
 
-    
-    public void loseLife() {
-        if (lives > 0) {
-            lives--;
-            displayLives();
-      }
-        if (lives == 0) {
-           gameOver();
-       }
+    private void loseLife() {
+        if (jumpCounter <= 0) {
+            gameOver(); 
+        }
+        else {
+            
+            if (lives > 0) {
+                lives--;
+                displayLives();
+            }
+            if (lives == 0) {
+                gameOver();
+            }
+        }
     }
     
    private void gameOver() {
@@ -271,6 +283,24 @@ public class App extends GraphicsProgram implements KeyListener {
        gameOverLabel.setLocation(PROGRAM_WIDTH / 2 - gameOverLabel.getWidth() / 2, PROGRAM_HEIGHT / 2);
         add(gameOverLabel);
     }
+   
+   private void updateJumpCounterDisplay() {
+	    for (GLabel label : jumpCounterLabels) {
+	        remove(label); 
+	    }
+	    jumpCounterLabels.clear();
+
+	    GLabel jumpLabel = new GLabel("Jumps left: " + jumpCounter);
+	    jumpLabel.setFont("SansSerif-bold-24");
+	    jumpLabel.setColor(Color.WHITE);
+
+	    int labelX = 10;
+	    int labelY = 80; 
+
+	    jumpLabel.setLocation(labelX, labelY);
+	    add(jumpLabel);
+	    jumpCounterLabels.add(jumpLabel);
+	}
 
     private class MovementKeyListener implements KeyListener {
     	private long jumpStartTime;
@@ -286,6 +316,8 @@ public class App extends GraphicsProgram implements KeyListener {
             if (keyCode == KeyEvent.VK_SPACE && isCollidedY && !spaceIsPressed) {
             	spaceIsPressed = true;
             	jumpStartTime = System.currentTimeMillis();
+            	jumpCounter--; 
+                updateJumpCounterDisplay(); 
             }
         }
 
