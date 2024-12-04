@@ -27,9 +27,9 @@ public class App extends GraphicsProgram implements KeyListener {
     private String currentBackground = "media/JumpItBackground#1.png";
     private String previousBackground = "media/JumpItBackground#1.png";
     private int backgroundNumber = 1;
-    private int lives = 3; // Default number of lives
+    private int lives = 3; 
     private ArrayList<GImage> lifeIcons = new ArrayList<>();
-    private int jumpCounter = 20; 
+    private int jumpCounter = 10; 
     private ArrayList<GLabel> jumpCounterLabels = new ArrayList<>(); 
     private boolean fellDown = false;
 
