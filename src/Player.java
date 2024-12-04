@@ -16,7 +16,7 @@ public class Player {
 
     public Player(double startX, double startY) {
         // Initialize player image
-        playerImage = new GImage("FrogAvatarDamage#1.png");
+        playerImage = new GImage("FrogAvatarIdle#1.png");
         double scaleFactor = 1;
         playerImage.setSize(playerImage.getWidth()* scaleFactor, playerImage.getHeight()* scaleFactor);
         playerImage.setLocation(startX - PLAYER_SIZE, startY - PLAYER_SIZE);

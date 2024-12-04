@@ -68,8 +68,6 @@ public class App extends GraphicsProgram implements KeyListener {
     	        velocity = 0;
     	        isCollidedY = true; // Reset to grounded state
     	        loseLife(); //Disable this when testing 
-                resetPlayerPosition(); // Reset player to a safe starting position
-
     	    }
     	    
     	    // Handle horizontal movement
@@ -218,6 +216,7 @@ public class App extends GraphicsProgram implements KeyListener {
         resetGrid(); // Clear existing platforms from the gridgrid = new Grid(25, 100); // Initialize a 10x10 grid
         createLevel(backgroundNumber); // Add platforms for the new map
         createPlayer();
+        displayLives();
     }
 
     public void init() {
