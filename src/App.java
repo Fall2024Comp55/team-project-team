@@ -67,7 +67,7 @@ public class App extends GraphicsProgram implements KeyListener {
     	        player.setLocation(player.getHitbox().getX(), getHeight() - PLAYER_SIZE + 1);
     	        velocity = 0;
     	        isCollidedY = true; // Reset to grounded state
-    	      //  loseLife(); 
+    	        loseLife(); //Disable this when testing 
                 resetPlayerPosition(); // Reset player to a safe starting position
 
     	    }
