@@ -32,6 +32,7 @@ public class App extends GraphicsProgram implements KeyListener {
     private int jumpCounter = 10; 
     private ArrayList<GLabel> jumpCounterLabels = new ArrayList<>(); 
     private boolean fellDown = false;
+    private boolean over = false;
 
     public void run() {
         GImage backGround = new GImage(currentBackground);
@@ -275,13 +276,17 @@ public class App extends GraphicsProgram implements KeyListener {
     
    private void gameOver() {
         removeAll();
-        GLabel gameOverLabel = new GLabel("Game Over");
+        GImage gameOverScreen = new GImage("media/gameOverScreen.png");
+        /*
         gameOverLabel.setFont("SansSerif-bold-36");
         gameOverLabel.setColor(Color.RED);
         double xPosition = PROGRAM_WIDTH / 2 - gameOverLabel.getWidth() / 2 - 50; 
         double yPosition = PROGRAM_HEIGHT / 2;
         gameOverLabel.setLocation(xPosition, yPosition);
-        add(gameOverLabel);
+        */
+        gameOverScreen.setSize(PROGRAM_WIDTH, PROGRAM_HEIGHT);
+        add(gameOverScreen);
+        over = true;
     }
    
    private void updateJumpCounterDisplay() {
@@ -324,6 +329,9 @@ public class App extends GraphicsProgram implements KeyListener {
                 updateJumpCounterDisplay(); 
                 
             
+            }
+            if(keyCode == KeyEvent.VK_ENTER && over) {
+            	new App().start();
             }
         }
 
