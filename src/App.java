@@ -4,6 +4,9 @@ import java.awt.event.*;
 import acm.graphics.*;
 import acm.program.*;
 import java.awt.*;
+import javax.sound.sampled.*;
+import java.io.File;
+import java.net.URL;
 
 public class App extends GraphicsProgram implements KeyListener {
     public static final double PROGRAM_WIDTH = 1550.0;
@@ -26,17 +29,21 @@ public class App extends GraphicsProgram implements KeyListener {
     private boolean spaceIsPressed = false;
     private String currentBackground = "media/JumpItBackground#1.png";
     private String previousBackground = "media/JumpItBackground#1.png";
+    private String winningBackground;
     private int backgroundNumber = 1;
     private int lives = 3; 
     private ArrayList<GImage> lifeIcons = new ArrayList<>();
-    private int jumpCounter = 10; 
+    private int jumpCounter = 20; 
     private ArrayList<GLabel> jumpCounterLabels = new ArrayList<>(); 
     private boolean fellDown = false;
     private boolean over = false;
+    private Clip backgroundMusic;
+    
 
     public void run() {
     	// Show the welcome screen for 5 seconds at the start
-        showWelcomeScreen();
+    	playBackgroundMusic();
+    	showWelcomeScreen();
 
         // Set up the game
     	GImage backGround = new GImage(currentBackground);
@@ -56,7 +63,11 @@ public class App extends GraphicsProgram implements KeyListener {
         displayLives();
         updateJumpCounterDisplay();
         addKeyListeners(new MovementKeyListener());
+        
+        // Play background music for levels 1 and 2
+       
     }
+    
     
     private void showWelcomeScreen() {
         // Load and display the welcome screen
@@ -70,6 +81,39 @@ public class App extends GraphicsProgram implements KeyListener {
         // Remove the welcome screen
         remove(welcomeScreen);
     }
+    
+    private void playBackgroundMusic() {
+    	System.out.println("IamHere1");
+        try {
+            //if (backgroundNumber == 1 || backgroundNumber == 2) {
+            	System.out.println("backgroundNumber = " + backgroundNumber);
+            	System.out.println("Background music plays.");
+            	URL audioPath = getClass().getResource("JumpItBackground.wav");
+            	System.out.println("Audio file path1: " + getClass().getResource("JumpItBackground.wav"));
+            	AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioPath);
+            	backgroundMusic = AudioSystem.getClip();
+            	backgroundMusic.open(audioStream);
+                
+                backgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
+                backgroundMusic.start();
+                
+           // } else {
+            //    stopBackgroundMusic();
+             //   System.out.println("Background music is stopped.");
+           // }
+        } catch (Exception e) {
+        	System.out.println("There is an error in playing audio.");
+            e.printStackTrace();
+        }
+    }
+    
+    private void stopBackgroundMusic() {
+        if (backgroundMusic != null && backgroundMusic.isRunning()) {
+            backgroundMusic.stop();
+            backgroundMusic.close();
+        }
+    }
+
 
     public void actionPerformed(ActionEvent e) {
     	   if (player == null || player.getSkin() == null) {
@@ -93,7 +137,7 @@ public class App extends GraphicsProgram implements KeyListener {
     	        isCollidedY = true; // Reset to grounded state
     	        System.out.println("Player Y pos" + player.getHitbox().getY());
     	        System.out.println("Height" + getHeight());
-    	        loseLife(); //Disable this when testing 
+    	        //loseLife(); //Disable this when testing 
     	    }
     	    
     	    // Handle horizontal movement
@@ -107,7 +151,9 @@ public class App extends GraphicsProgram implements KeyListener {
     	            player.moveRight();
     	        }
     	    }
-    	}
+    	    
+    	    
+    }
 
     public void checkCollision() {
         isCollidedY = false; // Reset collision state
@@ -209,17 +255,29 @@ public class App extends GraphicsProgram implements KeyListener {
     	int curr = backgroundNumber + 1;
     	previousBackground = "media/JumpItBackground#"+backgroundNumber+".png";
     	currentBackground = "media/JumpItBackground#"+curr+".png";
+    	winningBackground = "media/CompletionScreen.png";
         
-         if (player.getHitbox().getY() < 50) {
+    	// Should add another condition: current background is screen 1
+         if ((player.getHitbox().getY() < 50) && (backgroundNumber == 1)) {
             // Jumping out of the top of the screen
             System.out.println(curr);
             System.out.println(currentBackground);
             backgroundNumber += 1;
             loadMap(currentBackground);
             
-        }
-       
+            // Update background music for the new level
+            playBackgroundMusic();
+         }
+         else if ((player.getHitbox().getY() < 50) && (backgroundNumber == 2)) {
+        	 System.out.println();
+        	 loadWinningScreen(winningBackground);
+         
+        // Implement winning page
+        // Check for getHitbox().getY() < ? AND the current background is screen 2
+        // Do the same thing, but now loadWinningScreen instead of loadMap();
+         }
     }
+    
     
     public void resetGrid() {
         for (int i = 0; i < grid.getNumRows(); i++) {
@@ -245,6 +303,13 @@ public class App extends GraphicsProgram implements KeyListener {
         createPlayer();
         displayLives();
         updateJumpCounterDisplay();
+    }
+    
+    private void loadWinningScreen(String backgroundPath) {
+    	removeAll();
+    	GImage background = new GImage(backgroundPath);
+    	background.setSize(PROGRAM_WIDTH, PROGRAM_HEIGHT);
+        add(background);
     }
 
     public void init() {
@@ -305,6 +370,9 @@ public class App extends GraphicsProgram implements KeyListener {
         gameOverScreen.setSize(PROGRAM_WIDTH, PROGRAM_HEIGHT);
         add(gameOverScreen);
         over = true;
+        stopBackgroundMusic();
+        
+        //Add lose audio (maybe)
     }
    
    private void updateJumpCounterDisplay() {
