@@ -35,7 +35,11 @@ public class App extends GraphicsProgram implements KeyListener {
     private boolean over = false;
 
     public void run() {
-        GImage backGround = new GImage(currentBackground);
+    	// Show the welcome screen for 5 seconds at the start
+        showWelcomeScreen();
+
+        // Set up the game
+    	GImage backGround = new GImage(currentBackground);
         
         backGround.setSize(PROGRAM_WIDTH, PROGRAM_HEIGHT);
         //System.out.println("Static width"+getWidth());
@@ -52,6 +56,19 @@ public class App extends GraphicsProgram implements KeyListener {
         displayLives();
         updateJumpCounterDisplay();
         addKeyListeners(new MovementKeyListener());
+    }
+    
+    private void showWelcomeScreen() {
+        // Load and display the welcome screen
+        GImage welcomeScreen = new GImage("media/WelcomeScreen.png");
+        welcomeScreen.setSize(PROGRAM_WIDTH, PROGRAM_HEIGHT); // Set the size to match the program
+        add(welcomeScreen);
+
+        // Pause for 5 seconds
+        pause(5000);
+
+        // Remove the welcome screen
+        remove(welcomeScreen);
     }
 
     public void actionPerformed(ActionEvent e) {
