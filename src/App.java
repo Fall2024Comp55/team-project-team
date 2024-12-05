@@ -173,6 +173,7 @@ public class App extends GraphicsProgram implements KeyListener {
     		grid.setPlatform(9.4, 26.5, 100, 40);// right platform
     		grid.setPlatform(14, 19, 158, 40);
     		
+    		
     	}
         
 
@@ -312,12 +313,16 @@ public class App extends GraphicsProgram implements KeyListener {
         @Override
         public void keyPressed(KeyEvent e) {
             int keyCode = e.getKeyCode();
-            if (keyCode == KeyEvent.VK_A ) {
+            if (keyCode == KeyEvent.VK_A ||keyCode == KeyEvent.VK_D && keyCode == KeyEvent.VK_SPACE && isCollidedY && !spaceIsPressed) {
+            	long heldTime = (System.currentTimeMillis() - jumpStartTime)/100;// current time - time the user held space button
+            	player.RUNSPEED = Math.min((int)heldTime, 5);
                 aIsPressed = true;
                 player.moveLeft();
             }
             
-            if (keyCode == KeyEvent.VK_D) {
+            if (keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_D && keyCode == KeyEvent.VK_SPACE && isCollidedY && !spaceIsPressed) {
+            	long heldTime = (System.currentTimeMillis() - jumpStartTime)/100;// current time - time the user held space button
+            	player.RUNSPEED = Math.min((int)heldTime, 5);
                 dIsPressed = true;
                 player.moveRight();
 
@@ -340,11 +345,13 @@ public class App extends GraphicsProgram implements KeyListener {
             int keyCode = e.getKeyCode();
             if (keyCode == KeyEvent.VK_A) {
                 aIsPressed = false;
+                player.RUNSPEED = 1;
                 player.stopMoving();
                 
             }
             if (keyCode == KeyEvent.VK_D) {
                 dIsPressed = false;
+                player.RUNSPEED = 1;
                 player.stopMoving();
                 
             }
