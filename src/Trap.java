@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import acm.graphics.*;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
@@ -119,49 +118,4 @@ public abstract class Trap {
             }
         }
     }
-
-
-
-    // Abstract Boss class to serve as a base for different boss types
-    public abstract class Boss extends Trap {
-        protected ArrayList<GImage> bossArray;
-
-        public Boss(int x, int y) {
-            this.posX = x;
-            this.posY = y;
-            bossArray = new ArrayList<>();
-            // Populate bossArray with images to create boss animations/appearances
-        }
-
-        @Override
-        public abstract void action(Player player); // Each boss will have unique behavior
-    }
-
-    // Specific boss implementations
-    public class Boss1 extends Boss {
-        public Boss1(int x, int y) {
-            super(x, y);
-            // Initialize Boss1-specific properties here 
-        }
-
-        @Override
-        public void action(Player player) {
-            // Define Boss1-specific actions 
-        }
-    }
-
-    public class Boss2 extends Boss {
-        public Boss2(int x, int y) {
-            super(x, y);
-            // Initialize Boss2-specific properties here 
-        }
-
-        @Override
-        public void action(Player player) {
-            // Define Boss2-specific actions
-        }
-    }
-
-    // Additional Boss classes (e.g., Boss3, Boss4)
 }
-
