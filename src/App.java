@@ -33,7 +33,7 @@ public class App extends GraphicsProgram implements KeyListener {
     private int backgroundNumber = 1;
     private int lives = 3; 
     private ArrayList<GImage> lifeIcons = new ArrayList<>();
-    private int jumpCounter = 20; 
+    private int jumpCounter = 10; 
     private ArrayList<GLabel> jumpCounterLabels = new ArrayList<>(); 
     private boolean fellDown = false;
     private boolean over = false;
@@ -41,7 +41,6 @@ public class App extends GraphicsProgram implements KeyListener {
     
 
     public void run() {
-    	// Show the welcome screen for 5 seconds at the start
     	playBackgroundMusic();
     	showWelcomeScreen();
 
@@ -63,22 +62,14 @@ public class App extends GraphicsProgram implements KeyListener {
         displayLives();
         updateJumpCounterDisplay();
         addKeyListeners(new MovementKeyListener());
-        
-        // Play background music for levels 1 and 2
        
     }
-    
-    
+     
     private void showWelcomeScreen() {
-        // Load and display the welcome screen
         GImage welcomeScreen = new GImage("media/WelcomeScreen.png");
-        welcomeScreen.setSize(PROGRAM_WIDTH, PROGRAM_HEIGHT); // Set the size to match the program
+        welcomeScreen.setSize(PROGRAM_WIDTH, PROGRAM_HEIGHT); 
         add(welcomeScreen);
-
-        // Pause for 5 seconds
         pause(5000);
-
-        // Remove the welcome screen
         remove(welcomeScreen);
     }
     
@@ -137,7 +128,7 @@ public class App extends GraphicsProgram implements KeyListener {
     	        isCollidedY = true; // Reset to grounded state
     	        System.out.println("Player Y pos" + player.getHitbox().getY());
     	        System.out.println("Height" + getHeight());
-    	        //loseLife(); //Disable this when testing 
+    	        loseLife(); //ONLY Disable this when testing! 
     	    }
     	    
     	    // Handle horizontal movement
