@@ -69,7 +69,7 @@ public class App extends GraphicsProgram implements KeyListener {
         GImage welcomeScreen = new GImage("media/WelcomeScreen.png");
         welcomeScreen.setSize(PROGRAM_WIDTH, PROGRAM_HEIGHT); 
         add(welcomeScreen);
-        pause(5000);
+        pause(3000);
         remove(welcomeScreen);
     }
     

@@ -31,7 +31,7 @@ public class Player {
         // Initialize the hitbox
         hitbox = new GRect(App.PROG_WIDTH- PLAYER_SIZE, App.PROG_HEIGHT- PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE);
         hitbox.setFilled(false); // Invisible hitbox for collision
-    	Color transparent = new Color(0,0,0,100);// Makes platform transparent
+    	Color transparent = new Color(0,0,0,0);// Makes platform transparent
         hitbox.setColor(transparent); // Optional: Debugging aid to see the hitbox
         System.out.println(hitbox.getLocation());
         
