@@ -79,8 +79,8 @@ public class App extends GraphicsProgram implements KeyListener {
             //if (backgroundNumber == 1 || backgroundNumber == 2) {
             	System.out.println("backgroundNumber = " + backgroundNumber);
             	System.out.println("Background music plays.");
-            	URL audioPath = getClass().getResource("JumpItBackground.wav");
-            	System.out.println("Audio file path1: " + getClass().getResource("JumpItBackground.wav"));
+            	File audioPath = new File("Sounds/JumpItBackground.wav");
+            	System.out.println("Audio file path1: " + audioPath);
             	AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioPath);
             	backgroundMusic = AudioSystem.getClip();
             	backgroundMusic.open(audioStream);
@@ -97,6 +97,7 @@ public class App extends GraphicsProgram implements KeyListener {
             e.printStackTrace();
         }
     }
+
     
     private void stopBackgroundMusic() {
         if (backgroundMusic != null && backgroundMusic.isRunning()) {
@@ -135,13 +136,21 @@ public class App extends GraphicsProgram implements KeyListener {
     	    if (aIsPressed) {
     	        if (player.getHitbox().getX() > 0) {
     	            player.moveLeft();
+    	        }else {
+        	        player.setLocation(0, player.getHitbox().getY());
+
     	        }
+    	       
     	    }
     	    if (dIsPressed) {
     	        if (player.getHitbox().getX() + PLAYER_SIZE / 2 < getWidth() - PLAYER_SIZE) {
     	            player.moveRight();
+    	        }else {
+        	        player.setLocation(1490, player.getHitbox().getY());
+
     	        }
     	    }
+
     	    
     	    
     }
