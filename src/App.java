@@ -163,8 +163,8 @@ public class App extends GraphicsProgram implements KeyListener {
     }
 
     public void checkCollision() {
-        isCollidedY = false; // Reset collision state
-        isCollidedX = false;
+//        isCollidedY = false; // Reset collision state
+//        isCollidedX = false;
         Platforms platform;
         for (int i = 0; i < grid.getNumRows(); i++) {
             for (int j = 0; j < grid.getNumCols(); j++) {
@@ -188,8 +188,8 @@ public class App extends GraphicsProgram implements KeyListener {
 
                             if (player.getHitbox().getX()  < platform.getplatform().getX() + PLAYER_SIZE) { // Player hits platform from the left
                                 player.setLocation(player.getHitbox().getX() - 10, player.getHitbox().getY());
+                                
                                 isCollidedX = true;
-                              
                             } else if (player.getHitbox().getX() <= platform.getplatform().getX() + platform.getWidth()) { // Player hits platform from the right
                                 player.setLocation(player.getHitbox().getX() + 10, player.getHitbox().getY());
                                 isCollidedX = true;
@@ -200,7 +200,7 @@ public class App extends GraphicsProgram implements KeyListener {
                     // Check if the player's bottom edge intersects the platform's top edge
 
                     if (player.getHitbox().getBounds().intersects(platform.getplatform().getBounds())) {
-                    	System.out.println("collided");
+                    	System.out.println("collidedY");
                         //platform.getplatform().setColor(java.awt.Color.GREEN); // Debug: successful collision
                      if (player.getHitbox().getBounds().getY() > platform.getplatform().getBounds().getY()) { // if player is below collide with bottom
                         player.setLocation(player.getHitbox().getX(), platform.getplatform().getY() + PLAYER_SIZE);
@@ -211,7 +211,6 @@ public class App extends GraphicsProgram implements KeyListener {
                         player.setLocation(player.getHitbox().getX(), platform.getplatform().getY() - PLAYER_SIZE);
                         velocity = 0;
                         isCollidedY = true;
-                        fellDown = false;
                         return;
                      }
                     
@@ -280,14 +279,14 @@ public class App extends GraphicsProgram implements KeyListener {
             loadWinningScreen("media/CompletionScreen.png");
             stopBackgroundMusic();
         }
-//    	if (player.getHitbox().getY() > 733) {
-//    		fellDown = true;
-//    		backgroundNumber--;
-//    		currentBackground = "media/JumpItBackground#" + backgroundNumber + ".png";
-//            stopBackgroundMusic(); // Stop the old music
-//            loadMap(currentBackground);
-//            playBackgroundMusic(); // Start new music
-//    	}
+    	if (player.getHitbox().getY() > 733) {
+    		fellDown = true;
+    		backgroundNumber--;
+    		currentBackground = "media/JumpItBackground#" + backgroundNumber + ".png";
+            stopBackgroundMusic(); // Stop the old music
+            loadMap(currentBackground);
+            playBackgroundMusic(); // Start new music
+    	}
     }
     
     
@@ -313,7 +312,8 @@ public class App extends GraphicsProgram implements KeyListener {
         resetGrid(); // Clear existing platforms from the gridgrid = new Grid(25, 100); // Initialize a 10x10 grid
         createLevel(backgroundNumber); // Add platforms for the new map
         if (fellDown) {
-        	createPlayer(App.PROG_WIDTH, 0);
+        	createPlayer(0, 0);
+        	player.setLocation(player.getHitbox().getX(), 0);
         	fellDown = false;
         } else {
         	createPlayer(player.getHitbox().getX(), App.PROG_HEIGHT);
