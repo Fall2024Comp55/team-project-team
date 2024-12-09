@@ -39,7 +39,7 @@ public class Player {
         double imageOffsetY = (hitbox.getHeight() - playerImage.getHeight()) / 2;
         playerImage.setLocation(startX + imageOffsetX, startY + imageOffsetY);
         
-        animationTimer = new Timer(85, new ActionListener() {
+        animationTimer = new Timer(200, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 updateAnimation();
             }
