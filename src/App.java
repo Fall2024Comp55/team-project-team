@@ -103,6 +103,7 @@ public class App extends GraphicsProgram implements KeyListener {
             e.printStackTrace();
         }
     }
+
     
     private void stopBackgroundMusic() {
         if (backgroundMusic != null && backgroundMusic.isRunning()) {
@@ -146,6 +147,7 @@ public class App extends GraphicsProgram implements KeyListener {
     	        } else {
     	        	player.setLocation(0, player.getHitbox().getY());
     	        }
+    	       
     	    }
     	    if (dIsPressed) {
     	        if (player.getHitbox().getX() + PLAYER_SIZE / 2 < getWidth() - PLAYER_SIZE) {
@@ -154,6 +156,7 @@ public class App extends GraphicsProgram implements KeyListener {
     	        	player.setLocation(1490, player.getHitbox().getY());
     	        }
     	    }
+
     	    
     	    mapTransition();
     	    System.out.println(player.getHitbox().getX() + ", " +  player.getHitbox().getY());
