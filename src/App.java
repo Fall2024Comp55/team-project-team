@@ -17,20 +17,27 @@ public class App extends GraphicsProgram implements KeyListener {
     private Player player;
     private Timer time;
     private Grid grid; // Reference to the game grid
+    
+    private double playerX = App.PROG_WIDTH;
+    private double playerY = App.PROG_HEIGHT;
     private int gravity = 2;
     private int velocity = 0;
     private int jumpPower = 0; // Tracks how long the space key is held
     private final int MAX_JUMP_POWER = 40; // Maximum jump power
     private final int JUMP_INCREMENT = 5; // Power increase per frame
+    
     private boolean isCollidedY = false;
     private boolean isCollidedX = false;
+    
     private boolean aIsPressed = false;
     private boolean dIsPressed = false;
     private boolean spaceIsPressed = false;
+    
     private String currentBackground = "media/JumpItBackground#1.png";
     private String previousBackground = "media/JumpItBackground#1.png";
     private String winningBackground;
     private int backgroundNumber = 1;
+    
     private int lives = 3; 
     private ArrayList<GImage> lifeIcons = new ArrayList<>();
     private int jumpCounter = 10; 
@@ -52,13 +59,12 @@ public class App extends GraphicsProgram implements KeyListener {
         //System.out.println("Static height" + getHeight());
 
         add(backGround);
-        
         grid = new Grid(25, 100); // Initialize a 10x10 grid
         platforms = new ArrayList<>();
-        time = new Timer(10, this);
+        time = new Timer(1, this);
         time.start();
         createLevel(backgroundNumber);
-        createPlayer();
+        createPlayer(playerX, playerY);
         displayLives();
         updateJumpCounterDisplay();
         addKeyListeners(new MovementKeyListener());
@@ -79,8 +85,8 @@ public class App extends GraphicsProgram implements KeyListener {
             //if (backgroundNumber == 1 || backgroundNumber == 2) {
             	System.out.println("backgroundNumber = " + backgroundNumber);
             	System.out.println("Background music plays.");
-            	URL audioPath = getClass().getResource("JumpItBackground.wav");
-            	System.out.println("Audio file path1: " + getClass().getResource("JumpItBackground.wav"));
+            	File audioPath = new File("Sounds/JumpItBackground.wav");
+            	System.out.println("Audio file path1: " + audioPath);
             	AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioPath);
             	backgroundMusic = AudioSystem.getClip();
             	backgroundMusic.open(audioStream);
@@ -116,10 +122,12 @@ public class App extends GraphicsProgram implements KeyListener {
     	    velocity += gravity;
 
     	    checkCollision();
+    	    //System.out.println(player.getHitbox().getX() + ", " + player.getHitbox().getY());
     	    
     	    if (jumpCounter <= 0) {
     	        loseLife();
     	    }
+//    	    System.out.println(player.getHitbox().getX() + ", " + player.getHitbox().getY());
     	    
     	    // Prevent falling through the bottom of the screen
     	    if (player.getHitbox().getY() > getHeight() - PLAYER_SIZE) {
@@ -135,24 +143,30 @@ public class App extends GraphicsProgram implements KeyListener {
     	    if (aIsPressed) {
     	        if (player.getHitbox().getX() > 0) {
     	            player.moveLeft();
+    	        } else {
+    	        	player.setLocation(0, player.getHitbox().getY());
     	        }
     	    }
     	    if (dIsPressed) {
     	        if (player.getHitbox().getX() + PLAYER_SIZE / 2 < getWidth() - PLAYER_SIZE) {
     	            player.moveRight();
+    	        } else {
+    	        	player.setLocation(1490, player.getHitbox().getY());
     	        }
     	    }
     	    
-    	    
+    	    mapTransition();
+    	    System.out.println(player.getHitbox().getX() + ", " +  player.getHitbox().getY());
     }
 
     public void checkCollision() {
         isCollidedY = false; // Reset collision state
         isCollidedX = false;
+        Platforms platform;
         for (int i = 0; i < grid.getNumRows(); i++) {
             for (int j = 0; j < grid.getNumCols(); j++) {
                 if (grid.getSpace(i, j).hasPlatform()) {
-                    Platforms platform = grid.getSpace(i, j).getPlatform();
+                    platform = grid.getSpace(i, j).getPlatform();
 
                  /*   // Debug: Log positions
                     System.out.println("Player: x=" + player.getX() + ", y=" + player.getY() + 
@@ -183,13 +197,14 @@ public class App extends GraphicsProgram implements KeyListener {
                     // Check if the player's bottom edge intersects the platform's top edge
 
                     if (player.getHitbox().getBounds().intersects(platform.getplatform().getBounds())) {
+                    	System.out.println("collided");
                         //platform.getplatform().setColor(java.awt.Color.GREEN); // Debug: successful collision
-                     if(player.getHitbox().getBounds().getY() > platform.getplatform().getBounds().getY()) { // if player is below collide with bottom
+                     if (player.getHitbox().getBounds().getY() > platform.getplatform().getBounds().getY()) { // if player is below collide with bottom
                         player.setLocation(player.getHitbox().getX(), platform.getplatform().getY() + PLAYER_SIZE);
                         velocity = 0;
                         isCollidedY = true;
                         return;
-                     }else { // player on top of platform
+                     } else { // player on top of platform
                         player.setLocation(player.getHitbox().getX(), platform.getplatform().getY() - PLAYER_SIZE);
                         velocity = 0;
                         isCollidedY = true;
@@ -201,12 +216,15 @@ public class App extends GraphicsProgram implements KeyListener {
                     
                  
                 }
+                
             }
+            
         }
+        
      }
 
-    public void createPlayer() {
-    	 player = new Player(App.PROG_WIDTH, App.PROG_HEIGHT);
+    public void createPlayer(double x, double y) {
+    	 player = new Player(x, y);
     	 add(player.getSkin()); // Add the visual representation
     	 add(player.getHitbox()); // Add the hitbox (invisible)
     	 
@@ -243,30 +261,30 @@ public class App extends GraphicsProgram implements KeyListener {
     }
     
     public void mapTransition() {
-    	int curr = backgroundNumber + 1;
-    	previousBackground = "media/JumpItBackground#"+backgroundNumber+".png";
-    	currentBackground = "media/JumpItBackground#"+curr+".png";
-    	winningBackground = "media/CompletionScreen.png";
-        
-    	// Should add another condition: current background is screen 1
-         if ((player.getHitbox().getY() < 50) && (backgroundNumber == 1)) {
-            // Jumping out of the top of the screen
-            System.out.println(curr);
-            System.out.println(currentBackground);
-            backgroundNumber += 1;
-            loadMap(currentBackground);
-            
-            // Update background music for the new level
-            playBackgroundMusic();
-         }
-         else if ((player.getHitbox().getY() < 50) && (backgroundNumber == 2)) {
-        	 System.out.println();
-        	 loadWinningScreen(winningBackground);
-         
-        // Implement winning page
-        // Check for getHitbox().getY() < ? AND the current background is screen 2
-        // Do the same thing, but now loadWinningScreen instead of loadMap();
-         }
+//    	System.out.println("--------" + player.getHitbox().getY() + "--" + backgroundNumber);
+    	if (player.getHitbox().getY() < 0) {
+            if (backgroundNumber == 1) {
+                // Transition to Level 2
+                backgroundNumber++;
+                currentBackground = "media/JumpItBackground#" + backgroundNumber + ".png";
+                stopBackgroundMusic(); // Stop the old music
+                loadMap(currentBackground);
+                playBackgroundMusic(); // Start new music
+            }
+    	}
+    	if (backgroundNumber == 2 && player.getHitbox().getX() < 150 && player.getHitbox().getY() < -50) {
+            // Winning condition: load the winning screen
+            loadWinningScreen("media/CompletionScreen.png");
+            stopBackgroundMusic();
+        }
+//    	if (player.getHitbox().getY() > 733) {
+//    		fellDown = true;
+//    		backgroundNumber--;
+//    		currentBackground = "media/JumpItBackground#" + backgroundNumber + ".png";
+//            stopBackgroundMusic(); // Stop the old music
+//            loadMap(currentBackground);
+//            playBackgroundMusic(); // Start new music
+//    	}
     }
     
     
@@ -291,7 +309,12 @@ public class App extends GraphicsProgram implements KeyListener {
         //System.out.println(player.getHitbox().getY());
         resetGrid(); // Clear existing platforms from the gridgrid = new Grid(25, 100); // Initialize a 10x10 grid
         createLevel(backgroundNumber); // Add platforms for the new map
-        createPlayer();
+        if (fellDown) {
+        	createPlayer(App.PROG_WIDTH, 0);
+        	fellDown = false;
+        } else {
+        	createPlayer(player.getHitbox().getX(), App.PROG_HEIGHT);
+        }
         displayLives();
         updateJumpCounterDisplay();
     }
@@ -438,7 +461,7 @@ public class App extends GraphicsProgram implements KeyListener {
                 velocity = -jumpPower; // Set the initial upward velocity
                 player.jump(velocity);
                 jumpPower = 0;
-                mapTransition();
+                //mapTransition();
                 spaceIsPressed = false;
 
             }
